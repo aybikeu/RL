@@ -3,6 +3,7 @@ from heapq import heappush, heappop
 from itertools import count
 import networkx as nx
 import random
+import funcs2
 
 def SNEBC(G, demand, supply, weight):
     betweenness = dict.fromkeys(G, 0.0)  # b[v]=0 for v in G
@@ -100,7 +101,7 @@ def accumulate(betweenness, S, P, sigma, s, sigma_dist,demand, supply, dist_labe
         dem = demand[d]
         sup = supply[s]
 
-        if s in P[d]:
+        if s in P[d]: #If s is demand's immediate predecessor, then:
             beta[d] = 1.0/ sigma[d]
 
         #Counting the number of paths each node appears from the demand node
@@ -145,3 +146,13 @@ def uncollapse (node_betw, G_collapsed):
 
     return node_betw_uncol
 
+if __name__ == '__main__':
+
+    demand = [0,0,3,3,0]
+    supply = [5,0,0,0,5]
+    EdgeListWeighted = [(0, 1, 1), (0, 2, 3), (1, 2, 3), (1, 3, 2),
+                        (2, 3, 1), (2, 4, 3), (3, 4, 1)]
+    G = nx.Graph()
+    G.add_weighted_edges_from(EdgeListWeighted, weight='debris')
+
+    btw = SNEBC(G, demand, supply,  weight='debris')

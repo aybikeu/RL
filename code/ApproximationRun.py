@@ -13,11 +13,11 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 
 
-df = pd.read_csv('basis_100kVI_1R2.csv', sep=',')
+df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
 #df = pd.read_csv('basis.csv', sep=',')
 df.set_index('Unnamed: 0', inplace=True)
 
-df_q = pd.read_csv('Q_optimalVIR2.csv',sep=',')
+df_q = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS2.csv',sep=',')
 df_q.set_index('Unnamed: 0', inplace=True)
 
 
@@ -49,6 +49,11 @@ x = df[features]
 #ydf_merged = df['qval']
 y = q_column['q_val']
 
+df_xy = df.copy()
+df_xy['Qval'] = y
+df_xy.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/xNy_INS2.csv')
+
+
 vif = pd.DataFrame()
 vif["VIF Factor"] = [variance_inflation_factor(x.values, i) for i in range(x.shape[1])]
 vif["features"] = x.columns
@@ -65,7 +70,8 @@ for train, test in kf.split(df):
     r = model.fit(x.iloc[list(train)][:],y[list(train)]).score(x.iloc[list(test)][:],y[list(test)])
     results.append(r)
 
-print 'Results:' + str(results) + " Mean score:" + str(np.array(results).mean())
+mean_score = np.array(results).mean()
+print 'Results:' + str(results) + " Mean score:" + str(mean_score)
 
 # X_train, X_test, y_train, y_test = train_test_split(x,y,test_size=0.1)
 #

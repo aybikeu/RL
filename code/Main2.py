@@ -28,15 +28,19 @@ T_values=[100,300,1000]
 EdgeList = [(0,1), (0,2), (1,2), (1,3),
             (2,3), (2,4), (3,4)]
 
-EdgeListWeighted = [(0,1,1), (0,2,3), (1,2,3), (1,3,2),
+# EdgeListWeighted = [(0,1,1), (0,2,3), (1,2,3), (1,3,2),
+#             (2,3,1), (2,4,3), (3,4,1)]
+EdgeListWeighted = [(0,1,0.5), (0,2,1.5), (1,2,4), (1,3,0.5),
             (2,3,1), (2,4,3), (3,4,1)]
+
 
 ActionList = dict(zip(EdgeList, range(len(EdgeList))))
 
 G = nx.Graph()
 G.add_weighted_edges_from(EdgeListWeighted,weight='debris')
 
-initial_debris = [1,3,3,2,1,3,1] #for all edges
+#initial_debris = [1,3,3,2,1,3,1] #for all edges
+initial_debris = [0.5,1.5,4,0.5,1,3,1] # for the second instance
 initial_supply = [5,0,0,0,5] # for all nodes
 demand_indicator= [0,0,1,1,0] # for all nodes
 
@@ -63,8 +67,8 @@ initial_demand = map(lambda x: (x*mean_dist).round(0), demand_indicator) #For no
 actionSpace = [] #For the initial action space
 supply_nodes = [i for i,p in enumerate(initial_supply) if p>0]
 
-resource = 5
-
+resource = 1 #for the second instance
+#resource = 5
 
 n_edges = len(initial_debris)
 n_actions = n_edges #All the edges blocked with debris are the possible actions
@@ -90,7 +94,7 @@ Qmatrix = pd.DataFrame(data=0,
 #Parameters
 gamma = 1 # We don't define a discount value
 #n_episodes = 1E3 # A big number
-n_episodes = 50000
+n_episodes = 100000
 epsilon = 0.3
 temp = 10 # if greedy is chosen, dummy value assigned to temp
 T = temp #Temperature parameter of boltzmann
@@ -182,6 +186,8 @@ for e in range(int(n_episodes)):
     cleared_roads = [i for i, val in enumerate(state_dict[(first_state_id, 'debris')]) if val == 0]
     Schedule.extend(cleared_roads)
 
+
+    #G2 is the original graph whereas G_disrupted is the graph to be constructed with the cleared roads
     for cr in cleared_roads:
         ed = [edge for edge, edge_id in ActionList.items() if edge_id == cr][0]
         G2[ed[0]][ed[1]]['debris'] = 0
@@ -300,7 +306,7 @@ for e in range(int(n_episodes)):
 
     sas_dict[e]=sas_vec
 
-    obj_list.append(Qmatrix.iloc[0].max())
+    # obj_list.append(Qmatrix.iloc[0].max())
     # obj_list1.append(Qmatrix.iloc[1].max())
     # obj_list2.append(Qmatrix.iloc[2].max())
     # obj_list3.append(Qmatrix.iloc[3].max())
@@ -323,34 +329,34 @@ valid_state_num = len(state_dict)/4
 policy = funcs2.extractPolicy(Qmatrix, valid_state_num)
 
 #y = objdict[1000]
-x = range(len(obj_list))
-#y=objdict[1000]
-y=obj_list
-#plt.plot(x,y, label='T=1000')
-plt.plot(x,y, label='state 0')
-#plt.legend('T=1000')
-xlabel('# of episodes')
-ylabel('Objective value')
+# x = range(len(obj_list))
+# #y=objdict[1000]
+# y=obj_list
+# #plt.plot(x,y, label='T=1000')
+# plt.plot(x,y, label='state 0')
+# #plt.legend('T=1000')
+# xlabel('# of episodes')
+# ylabel('Objective value')
 # plt.plot(x,objdict[300],label='T=300')
 # plt.plot(x,objdict[100],label='T=100')
 
 
 # plt.plot(x,objdict[20])
-plt.plot(x,obj_list1, label='state 1')
-plt.plot(x,obj_list4, label='state 4')
-plt.plot(x,obj_list, label='state 2')
-plt.plot(x,obj_list3, label='state 3')
-plt.plot(x,obj_list33, label='state 33')
-plt.legend()
-grid(True)
-show()
+# plt.plot(x,obj_list1, label='state 1')
+# plt.plot(x,obj_list4, label='state 4')
+# plt.plot(x,obj_list, label='state 2')
+# plt.plot(x,obj_list3, label='state 3')
+# plt.plot(x,obj_list33, label='state 33')
+# plt.legend()
+# grid(True)
+# show()
 
 counter=0
 for key, val in sas_dict.items():
     if val[1]==6:
         counter+=1
 
-policy.to_csv('opt_policy_100kVI_1R2.csv', sep=',')
+policy.to_csv('opt_policy_100kVI_INS2.csv', sep=',')
 
 #phi_sorted = sorted(phi_sa.items())
 df_basis= pd.DataFrame(data=phi_sa.values(),index=phi_sa.keys(),columns=['Action Betw','resource','satisfied demand',
@@ -366,28 +372,28 @@ df_basis.sort_index(inplace=True)
 #
 # df_basis['qval']=qsa
 
-df_basis.to_csv('basis_100kVI_1R2.csv', sep=',')
+df_basis.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
 
 
-Q_alphaMatrix.to_csv('Q_alphamatrix_R2.csv',sep=',')
-Qmatrix.to_csv('Q_matrix_R2.csv',sep=',')
+Q_alphaMatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_alphamatrix_INS2.csv',sep=',')
+Qmatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_matrix_INS2.csv',sep=',')
 
-with open('state_info_100kVI_1R2.csv', 'wb') as myfile2:
+with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/state_info_100kVI_INS2.csv', 'wb') as myfile2:
     b = csv.writer(myfile2)
     for key,val in sorted(state_dict.items()):
     #for key, val in policy.items():
         b.writerow([key,val])
+# #
+# with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/policy_100k_VIR2.csv', 'wb') as myfile1:
+#     b = csv.writer(myfile1)
+#     for key,val in sas_dict.items():
+#     #for key, val in policy.items():
+#         b.writerow([key,val])
 #
-with open('policy_100k_VIR2.csv', 'wb') as myfile1:
-    b = csv.writer(myfile1)
-    for key,val in sas_dict.items():
-    #for key, val in policy.items():
-        b.writerow([key,val])
-#
-with open('obj_list_1mrandomstoc.csv', 'wb') as myfile:
-    a = csv.writer(myfile,delimiter=',')
-    data = y
-    a.writerow(y)
+# with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/obj_list_1mrandomstoc_INS2.csv', 'wb') as myfile:
+#     a = csv.writer(myfile,delimiter=',')
+#     data = y
+#     a.writerow(y)
 
 df_pr=pd.DataFrame(columns=('probability','reward','s','a','s_prime'),dtype=float)
 for s, v1 in p_sas.items():
@@ -398,7 +404,7 @@ for s, v1 in p_sas.items():
 
 df_pr.set_index(['s','a'], inplace=True)
 
-df_pr.to_csv('pr_forVIR2.csv', sep=',')
+df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS2.csv', sep=',')
 
 
 print ( "The end")

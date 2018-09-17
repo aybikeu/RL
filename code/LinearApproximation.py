@@ -13,7 +13,8 @@ from copy import copy
 import SNEBC
 import sampleSimulation as sim
 
-basis = pd.read_csv('basis_100kVI_1R2.csv', sep=',')
+#basis = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_1R2.csv', sep=',')
+basis = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
 basis.set_index('Unnamed: 0', inplace=True)
 basis['period_nonlinear'] = basis['period'].apply(lambda x: np.exp(-0.2*x))
 
@@ -26,7 +27,10 @@ theta = np.ones(n_features)
 EdgeList = [(0,1), (0,2), (1,2), (1,3),
             (2,3), (2,4), (3,4)]
 
-EdgeListWeighted = [(0,1,1), (0,2,3), (1,2,3), (1,3,2),
+# EdgeListWeighted = [(0,1,1), (0,2,3), (1,2,3), (1,3,2),
+#             (2,3,1), (2,4,3), (3,4,1)]
+
+EdgeListWeighted = [(0,1,0.5), (0,2,1.5), (1,2,4), (1,3,0.5),
             (2,3,1), (2,4,3), (3,4,1)]
 
 ActionList = dict(zip(EdgeList, range(len(EdgeList))))
@@ -35,8 +39,8 @@ G = nx.Graph()
 G.add_weighted_edges_from(EdgeListWeighted,weight='debris')
 
 
-
-initial_debris = [1,3,3,2,1,3,1] #for all edges
+initial_debris = [0.5,1.5,4,0.5,1,3,1] # for the second instance
+#initial_debris = [1,3,3,2,1,3,1] #for all edges
 initial_supply = [5,0,0,0,5] # for all nodes
 demand_indicator= [0,0,1,1,0] # for all nodes
 n_edges = len(initial_debris)

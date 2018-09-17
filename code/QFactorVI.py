@@ -2,11 +2,11 @@ import pandas as pd
 
 
 
-df = pd.read_csv('pr_forVIR2.csv')
+df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS2.csv')
 epsilon = 0.1
 convergence_check=False
 
-n_states = 1053
+n_states = 862# 1053 for the first instance
 n_actions=7
 n_sas = df.shape[0] #number of all (s, a, s_prime)
 
@@ -20,7 +20,7 @@ Q_Tnext = pd.DataFrame(data=0,
                        dtype=float)
 
 #while convergence_check==False:
-for _ in range(5):
+for _ in range(20):
     for s in range(n_states):
         for a in range(n_actions):
             df_slice = df.query('s== {} & a=={}'.format(s,a))
@@ -39,7 +39,7 @@ for _ in range(5):
 if Q_diff.sum().sum() <= epsilon * 3000:
     convergence_check = True
 
-Q_Tnext.to_csv('Q_optimalVIR2.csv',sep=',')
+Q_Tnext.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS2.csv',sep=',')
 
 
 
