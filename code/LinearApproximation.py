@@ -14,14 +14,15 @@ import SNEBC
 import sampleSimulation as sim
 
 #basis = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_1R2.csv', sep=',')
-basis = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
-basis.set_index('Unnamed: 0', inplace=True)
-basis['period_nonlinear'] = basis['period'].apply(lambda x: np.exp(-0.2*x))
+# basis = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
+# basis.set_index('Unnamed: 0', inplace=True)
+# basis['period_nonlinear'] = basis['period'].apply(lambda x: np.exp(-0.2*x))
+#
+# features = ['actual rem demand','satisfied demand','collected debris', 'resource']
+#
+# n_features = len(features)
 
-features = ['actual rem demand','satisfied demand','collected debris', 'resource']
-
-n_features = len(features)
-
+n_features = 4
 theta = np.ones(n_features)
 
 EdgeList = [(0,1), (0,2), (1,2), (1,3),
@@ -111,17 +112,24 @@ for _ in range(10000):
 
     state, actions, Schedule, reachable_nodes = sim.buildEnvironment(explored_states, state_dict, G, G2, G_disrupted, ActionList, supply_nodes)
 
-    Qmatrix, action, basis = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_disrupted, G2, G, EdgeList, reachable_nodes,
+    Qmatrix, action, basis, id_counter, new_state, reward = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_disrupted, G2, G, EdgeList, reachable_nodes,
            ActionList, dist, phi_sa, total_debris, total_supply, explored_states, state_dict, id_dict, id_counter)
+
+
+
 
     #basis_sa = basis.query('s== {} & a=={}'.format(state.ID, action))
     basis_sa = phi_sa[(state.ID, action)]
     bas = np.asarray(basis_sa)
     basis_sa = bas[[2,4,5,6]]  #Get the necessary features
 
+    Qmatrix = funcs2.updatePredQ(Qmatrix, action, state, new_state, reward, theta, phi_sa)
 
-    theta_next = theta - step_size*((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa,theta))*basis_sa)
+    #theta_next = theta + step_size*((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa,theta))*basis_sa)
+    theta_next = theta + step_size * ((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa, theta)) * basis_sa)
 
+    diff_theta = theta_next - theta
+    print('Difference between thetas:', sum(diff_theta))
     theta = theta_next
 
 

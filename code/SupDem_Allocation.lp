@@ -1,11 +1,15 @@
 \* Supply Allocation *\
 Maximize
-OBJ: x_0_3
+OBJ: x_4_2
 Subject To
-_C1: x_0_3 <= 6
-_C2: x_0_3 <= 5
+_dummy: __dummy = 0
+_C1: __dummy <= 5
+_C2: x_4_2 <= 5
+_C3: x_4_2 <= 4
+_C4: __dummy <= 3
 Bounds
-0 <= x_0_3
+__dummy = 0
+0 <= x_4_2
 Generals
-x_0_3
+x_4_2
 End

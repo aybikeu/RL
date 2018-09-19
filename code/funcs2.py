@@ -5,7 +5,7 @@ import networkx as nx
 from pulp import *
 import pandas as pd
 import math
-
+import SNEBC
 
 def initializeActionSpace (reachable_nodes, G, ActionList):
 
@@ -23,7 +23,7 @@ def get_newReachableNode(reachable_nodes, action, ActionList, G_collapsed, G2):
 
     G_collapsed.add_edge(ed[0],ed[1])
 
-    for node in reachable_nodes:
+    for node in reachable_nodes: #There is always going to be 1 node newly discovered - because the network is always composed of debris edges
         for n in range(2):
             if node == ed[n]:
                 new_node = ed[abs(1 - n)]
@@ -70,6 +70,18 @@ def updateQ (Q, Q_a,  action, first_state, second_state, reward, n_eps,alpha):
     Q_a.iloc [first_state.ID][action] = Q_a.iloc[first_state.ID][action] + 1
     return Q
 
+def updatePredQ(Qmatrix, first_state, new_state, reward, theta, phi_sa, n_actions):
+
+    max_q = -1
+    for a in range(n_actions):
+        basis_newstate = phi_sa[(new_state.ID, a)]
+        bas = np.asarray(basis_newstate)
+        basis_newstate = bas[[2, 4, 5, 6]]
+        q_sa = np.dot(basis_newstate, theta)
+        Qmatrix.iloc[new_state.ID][a] = q_sa
+
+    q = reward + max_q
+    return q
 # def getPeriod(rem_resource, period, resource_usage, R):
 #     if resource_usage > rem_resource:
 #         period += 1
@@ -194,9 +206,9 @@ def fixcondensation(G_collapsed, demand, supply, G2):
     return demandvec, supplyvec, G_collapsed
 
 def constructfeatures(first_state, action, phi_sa, discovered_nodes, reachable_nodes,
-                      G2, new_node, ActionList, debris_feature, demand_feature, period,
-                      resource_usage, satisfied_demand, betw_edges ):
-    try:
+                      G2, new_node, ActionList,  period,
+                      resource_usage, satisfied_demand, G_disrupted, total_debris, total_supply, EdgeList ):
+    try: # if the basis is already constructed, no need to do the same calculations again
         phi_sa[(first_state.ID, action)]
     except KeyError:
         phi_sa[(first_state.ID, action)] = []
@@ -217,6 +229,15 @@ def constructfeatures(first_state, action, phi_sa, discovered_nodes, reachable_n
         # Add it to the feature matrix phi
         # phi_sa[(first_state.ID, action)].append(deg_node)
         # phi_sa[(first_state.ID, action)].append(betw_node)
+
+        G_collapsed = nx.condensation(G_disrupted.to_directed())
+        demand_collapsed, supply_collapsed, G_collapsed = fixcondensation(G_collapsed, first_state.rem_demand,
+                                                                                 first_state.rem_supply, G2)
+        betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
+        betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
+        betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
+
+
         act = [key for key, value in ActionList.items() if value == action][0]
         phi_sa[(first_state.ID, action)].append(betw_edges[act])
 
@@ -236,6 +257,9 @@ def constructfeatures(first_state, action, phi_sa, discovered_nodes, reachable_n
         phi_sa[(first_state.ID, action)].append(
             np.count_nonzero(np.asarray(first_state.rem_demand)) * 3)  # total expected rem_demand
         phi_sa[(first_state.ID, action)].append(sum(first_state.rem_demand))  # Total realized demand
+
+        debris_feature = total_debris - sum(first_state.rem_debris)  # This is the debris cleared until now
+        demand_feature = total_supply - sum(first_state.rem_supply)  # This is the total demand satisfied until now
 
         phi_sa[(first_state.ID, action)].append(debris_feature)  # Total cleared debris until now
         phi_sa[(first_state.ID, action)].append(demand_feature)  # Total satisfied demand until now

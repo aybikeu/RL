@@ -48,8 +48,8 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     n_nodes = len(G.nodes)
     Cost = np.zeros((n_nodes, n_nodes))
 
-    debris_feature = total_debris - sum(first_state.rem_debris)  # This is the debris cleared until now
-    demand_feature = total_supply - sum(first_state.rem_supply)  # This is the total demand satisfied until now
+    # debris_feature = total_debris - sum(first_state.rem_debris)  # This is the debris cleared until now
+    # demand_feature = total_supply - sum(first_state.rem_supply)  # This is the total demand satisfied until now
 
     #Choose action
     action = first_state.choose_action(epsilon, Qmatrix, actions, Schedule, rule, T, Q_alphaMatrix, e)
@@ -58,12 +58,11 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
 
     ## Vertex collapse - condense the network
     # For large sized instances calculating sp can be hard
-    G_collapsed = nx.condensation(G_disrupted.to_directed())
-    demand_collapsed , supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, first_state.rem_demand, first_state.rem_supply, G2)
-
-    betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
-    betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
-    betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
+    # G_collapsed = nx.condensation(G_disrupted.to_directed())
+    # demand_collapsed , supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, first_state.rem_demand, first_state.rem_supply, G2)
+    # betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
+    # betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
+    # betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
 
     ######### Realize the new state and get its information #########
     #################################################################
@@ -94,8 +93,8 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     #Construct features
 
     phi_sa = funcs2.constructfeatures(first_state, action, phi_sa, discovered_nodes, reachable_nodes,
-                                      G2, new_node, ActionList, debris_feature, demand_feature, period, resource_usage,
-                                      satisfied_demand, betw_edges)
+                                      G2, new_node, ActionList, period, resource_usage,
+                                      satisfied_demand, G_disrupted, total_debris, total_supply, EdgeList)
 
     reachable_nodes = discovered_nodes
 
@@ -123,6 +122,15 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     if new_state.ID not in explored_states and sum(new_state.rem_demand)>0:
         explored_states.append(new_state.ID)
 
-    Qmatrix = funcs2.updateQ(Qmatrix, Q_alphaMatrix, action, first_state, new_state, reward, n_episodes,alpha)
+    #Qmatrix = funcs2.updateQ(Qmatrix, Q_alphaMatrix, action, first_state, new_state, reward, n_episodes,alpha)
 
-    return Qmatrix, action, phi_sa
+
+    #Q_sa = reward + Qmatrix.iloc[second_state.ID].max()
+
+    #construct features for the new_state so that you can calculate the predicted Q_values
+    phi_sa = funcs2.constructfeatures(new_state, action, phi_sa, discovered_nodes, reachable_nodes,
+                                      G2, new_node, ActionList, period, resource_usage,
+                                      satisfied_demand, G_disrupted, total_debris, total_supply, EdgeList)
+
+
+    return Qmatrix, action, phi_sa, id_counter, new_state, reward

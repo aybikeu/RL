@@ -132,7 +132,7 @@ class State():
             demand_vec = self.rem_demand
             supply_vec = self.rem_supply
         else:
-            Cost, check = funcs2.updateCost(new_node, connected_sup, demand_nodes, G_collapsed, Cost)
+            Cost, check = funcs2.updateCost(new_node, connected_sup, demand_nodes, G_collapsed, Cost) #establishing the connection between the supply and new node (not like an adjacency matrix just indicating if there is path)
             if check ==1: #If nothing has changed - no need to make any calculations
                 demand_vec, supply_vec, satisfied_demand = funcs2.supplyAllocation(Cost, self.rem_demand, self.rem_supply, demand_nodes, supply_nodes)
             else:
