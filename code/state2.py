@@ -102,12 +102,12 @@ class State():
 
         return new_rem_debris, resource_usage
 
-    def establishSupplyConnection(self, new_node, G_collapsed):
+    def establishSupplyConnection(self, new_node, G_restored):
         # get the supply that the new node is connected to
         s = [i for i, val in enumerate(self.rem_supply) if val > 0]
         connected_sup = []  # Supplies with non-zero supply that are reachable from the new node
         for sup in s:
-            if nx.has_path(G_collapsed, sup, new_node):
+            if nx.has_path(G_restored, sup, new_node):
                 connected_sup.append(sup)
 
         return connected_sup
@@ -145,8 +145,8 @@ class State():
 
     def transferSupply(self, connected_supply):
 
-        #Pick the random supply node all the supply that is going to be transfered
-        sf = connected_supply[0]
+        #Pick the supply node with lowest index that all supply that is going to be transfered
+        sf = connected_supply.sort()[0]
         tot = np.asarray(self.rem_supply)[connected_supply].sum()
         self.rem_supply[sf] = tot
 

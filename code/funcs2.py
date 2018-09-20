@@ -205,67 +205,49 @@ def fixcondensation(G_collapsed, demand, supply, G2):
 
     return demandvec, supplyvec, G_collapsed
 
-def constructfeatures(first_state, action, phi_sa, discovered_nodes, reachable_nodes,
-                      G2, new_node, ActionList,  period,
-                      resource_usage, satisfied_demand, G_disrupted, total_debris, total_supply, EdgeList ):
+def constructfeatures(first_state, action, phi_sa, ActionList, period,
+                      resource_usage,  total_debris,  betw_edges ):
     try: # if the basis is already constructed, no need to do the same calculations again
         phi_sa[(first_state.ID, action)]
     except KeyError:
         phi_sa[(first_state.ID, action)] = []
-        # phi_sa[(first_state.ID, action)].append(1)
 
-        # Create the centrality measures
-        # 2 options - you can get the degree centrality of the new node
-        # or you can calculate the avg degree cent for all of the newly reachable nodes
-        if not bool(discovered_nodes.difference(reachable_nodes)):  # this means the new_node is already discovered
-            deg_node = 0
-            betw_node = 0
-        else:
-            deg_node = nx.degree_centrality(G2)[new_node]
-            # deg_avg = np.mean(list(nx.degree_centrality(G2)[new_reachable_nodes].values()))
+        ###--------------------------- 1 ----------------------------####
 
-            betw_node = round(nx.betweenness_centrality(G2, weight='debris')[new_node], 2)
-
-        # Add it to the feature matrix phi
-        # phi_sa[(first_state.ID, action)].append(deg_node)
-        # phi_sa[(first_state.ID, action)].append(betw_node)
-
-        G_collapsed = nx.condensation(G_disrupted.to_directed())
-        demand_collapsed, supply_collapsed, G_collapsed = fixcondensation(G_collapsed, first_state.rem_demand,
-                                                                                 first_state.rem_supply, G2)
-        betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
-        betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
-        betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
-
-
+        # Add SNEBC measure for s,a pair
         act = [key for key, value in ActionList.items() if value == action][0]
         phi_sa[(first_state.ID, action)].append(betw_edges[act])
 
-        # 4th feature - amount of resource usage (debris amount) on the action(road)
+        ###--------------------------- 2 ---------------------------###
+        #amount of resource usage (debris amount) on the action(road)
         phi_sa[(first_state.ID, action)].append(resource_usage)
 
+        ###--------------------------- 3 ---------------------------### THIS IS A STATE PROPERTY THOUGH
         # Even if the new reached node is not a demand point it can be connected to other demand
         # via unblocked roads - hence should be taken into account
         # The amount of satisfied demand is going to change - hence binary makes more sense
         # If we had different prob distributions then we could've put the expected val of the demand dist too
+        #
+        # if satisfied_demand > 0:
+        #     phi_sa[(first_state.ID, action)].append(satisfied_demand)
+        # else:
+        #     phi_sa[(first_state.ID, action)].append(0)
 
-        if satisfied_demand > 0:
-            phi_sa[(first_state.ID, action)].append(satisfied_demand)
-        else:
-            phi_sa[(first_state.ID, action)].append(0)
-
-        phi_sa[(first_state.ID, action)].append(
-            np.count_nonzero(np.asarray(first_state.rem_demand)) * 3)  # total expected rem_demand
         phi_sa[(first_state.ID, action)].append(sum(first_state.rem_demand))  # Total realized demand
+        #phi_sa[(first_state.ID, action)].append(np.count_nonzero(np.asarray(first_state.rem_demand)) * 3)  # total expected rem_demand
 
+        ###--------------------------- 4 ---------------------------###
         debris_feature = total_debris - sum(first_state.rem_debris)  # This is the debris cleared until now
-        demand_feature = total_supply - sum(first_state.rem_supply)  # This is the total demand satisfied until now
-
         phi_sa[(first_state.ID, action)].append(debris_feature)  # Total cleared debris until now
-        phi_sa[(first_state.ID, action)].append(demand_feature)  # Total satisfied demand until now
-        phi_sa[(first_state.ID, action)].append(period)
+
+        ###--------------------------- 5 ---------------------------###
+
+        # demand_feature = total_supply - sum(first_state.rem_supply)  # This is the total demand satisfied until now
+        # phi_sa[(first_state.ID, action)].append(demand_feature)  # Total satisfied demand until now
+
+        ###--------------------------- 6 ---------------------------###
         phi_sa[(first_state.ID, action)].append(np.exp(-0.2 * period))
-        phi_sa[(first_state.ID, action)].append(deg_node)  # Degree of the new reachable node
+
 
     return phi_sa
 

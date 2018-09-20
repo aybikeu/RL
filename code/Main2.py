@@ -159,8 +159,8 @@ for e in range(int(n_episodes)):
     reachable_nodes = set(supply_nodes)
     rem_resource = resource
     period = 1
-    G_disrupted = nx.Graph()
-    G_disrupted.add_nodes_from(range(n_nodes))
+    G_restored = nx.Graph()
+    G_restored.add_nodes_from(range(n_nodes))
     leftover_demand = []
     Cost = np.zeros((n_nodes, n_nodes)) #Cost matrix for the transportation problem - for supply allocation to demand
     objective = 0
@@ -191,11 +191,11 @@ for e in range(int(n_episodes)):
     for cr in cleared_roads:
         ed = [edge for edge, edge_id in ActionList.items() if edge_id == cr][0]
         G2[ed[0]][ed[1]]['debris'] = 0
-        G_disrupted.add_edge(ed[0], ed[1])
+        G_restored.add_edge(ed[0], ed[1])
 
     reachable_nodes = [] #list for reachable nodes
     for s in supply_nodes:
-        reachable_nodes.extend(list(nx.dfs_preorder_nodes(G_disrupted, s)))
+        reachable_nodes.extend(list(nx.dfs_preorder_nodes(G_restored, s)))
 
     actions = funcs2.initializeActionSpace(reachable_nodes, G, ActionList)  # actions are the admissable action indices corresponding in ActionList
 
@@ -214,8 +214,8 @@ for e in range(int(n_episodes)):
         sas_vec.append(action)
 
         ## Vertex collapse - condense the network
-        # For large sized instances calculating sp can be hard
-        G_collapsed = nx.condensation(G_disrupted.to_directed())
+        #For large sized instances calculating sp can be hard
+        G_collapsed = nx.condensation(G_restored.to_directed())
         demand_collapsed , supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, first_state.rem_demand, first_state.rem_supply, G2)
 
         betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
@@ -225,13 +225,13 @@ for e in range(int(n_episodes)):
         ######### Realize the new state and get its information #########
         #################################################################
         #Find where that action leads - how the graph changes
-        new_node, discovered_nodes = funcs2.get_newReachableNode(set(reachable_nodes), action, ActionList, G_disrupted, G2)
+        new_node, discovered_nodes = funcs2.get_newReachableNode(set(reachable_nodes), action, ActionList, G_restored, G2)
 
         #Update the action list by adding the new_node's connections
         funcs2.updateActions(new_node, actions, ActionList, G)
 
         #Find from which supply locations the new_node is accessible
-        connected_supply = first_state.establishSupplyConnection(new_node, G_disrupted)
+        connected_supply = first_state.establishSupplyConnection(new_node, G_restored)
 
         #If the newly found node connects supplies - then supply transfer
         if len(connected_supply) > 1:
@@ -239,7 +239,7 @@ for e in range(int(n_episodes)):
 
 
         # First realize demand then allocate supply immediately
-        new_rem_demand, new_rem_supply, satisfied_demand, dem = first_state.realizeDemand(new_node, dist, connected_supply, G_disrupted, Cost, reachable_nodes)
+        new_rem_demand, new_rem_supply, satisfied_demand, dem = first_state.realizeDemand(new_node, dist, connected_supply, G_restored, Cost, reachable_nodes)
 
         #Get the resource usage and update remaining debris amounts
         new_rem_debris, resource_usage = first_state.updateDebris(action)
@@ -251,9 +251,14 @@ for e in range(int(n_episodes)):
 
         #Construct features
 
-        phi_sa = funcs2.constructfeatures(first_state, action, phi_sa, discovered_nodes, reachable_nodes,
-                                          G2, new_node, ActionList, debris_feature, demand_feature, period, resource_usage,
-                                          satisfied_demand, betw_edges)
+        # phi_sa = funcs2.constructfeatures(first_state, action, phi_sa, discovered_nodes, reachable_nodes,
+        #                                   G2, new_node, ActionList, debris_feature, demand_feature, period, resource_usage,
+        #                                   satisfied_demand, betw_edges)
+
+
+        phi_sa = funcs2.constructfeatures(first_state, action, phi_sa,
+                                          G2, new_node, ActionList, period,
+                                          resource_usage, satisfied_demand, G_restored, total_debris, total_supply, EdgeList)
 
         reachable_nodes = discovered_nodes
 

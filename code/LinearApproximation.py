@@ -83,7 +83,7 @@ QalphaMatrix = pd.DataFrame(data=0,
 
 state_dict = {}
 explored_states = []
-resource = 5
+resource = 1
 phi_sa = {}
 
 state_dict[(0, 'demand')] = initial_demand
@@ -104,36 +104,44 @@ step_size = 0.1
 for _ in range(10000):
 
 
-    G_disrupted = nx.Graph()
-    G_disrupted.add_nodes_from(range(n_nodes))
+    G_restored = nx.Graph()
+    G_restored.add_nodes_from(range(n_nodes))
 
     G2 = nx.Graph()
     G2.add_weighted_edges_from(EdgeListWeighted, weight='debris')
 
-    state, actions, Schedule, reachable_nodes = sim.buildEnvironment(explored_states, state_dict, G, G2, G_disrupted, ActionList, supply_nodes)
+    state, actions, Schedule, reachable_nodes = sim.buildEnvironment(explored_states, state_dict, G, G2, G_restored, ActionList, supply_nodes)
 
-    Qmatrix, action, basis, id_counter, new_state, reward = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_disrupted, G2, G, EdgeList, reachable_nodes,
-           ActionList, dist, phi_sa, total_debris, total_supply, explored_states, state_dict, id_dict, id_counter)
+    action, id_counter, new_state, reward, period, actions = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_restored, G2, G, EdgeList, reachable_nodes,
+                                                                               ActionList, dist, phi_sa, total_debris, total_supply, explored_states, state_dict, id_dict, id_counter)
 
+    phi_sa, action_order, Basis = sim.new_state_basis(new_state,phi_sa, ActionList, state.cum_resource, G_restored, EdgeList, G2, total_debris, actions)
 
+    Q_pred_new_state = Basis * theta
+    max_q = max(Q_pred_new_state)
+    m_i = Q_pred_new_state.index(max_q)
+    action_max = action_order[m_i]
 
+    Qmatrix_previous = Qmatrix.copy() #Store Qmatrix's previous values
+
+    Qmatrix.iloc[state.ID][action] = reward + max_q
 
     #basis_sa = basis.query('s== {} & a=={}'.format(state.ID, action))
     basis_sa = phi_sa[(state.ID, action)]
     bas = np.asarray(basis_sa)
-    basis_sa = bas[[2,4,5,6]]  #Get the necessary features
+    #basis_sa = bas[[2,4,5,6]]  #Get the necessary features
 
-    Qmatrix = funcs2.updatePredQ(Qmatrix, action, state, new_state, reward, theta, phi_sa)
+    #Qmatrix = funcs2.updatePredQ(Qmatrix, action, state, new_state, reward, theta, phi_sa)
 
     #theta_next = theta + step_size*((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa,theta))*basis_sa)
     theta_next = theta + step_size * ((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa, theta)) * basis_sa)
 
-    diff_theta = theta_next - theta
-    print('Difference between thetas:', sum(diff_theta))
-    theta = theta_next
+    # diff_theta = theta_next - theta
+    # print('Difference between thetas:', sum(diff_theta))
+    # theta = theta_next
 
 
 #Extract the optimal policy: action for each state
 
-valid_state_num = len(state_dict)/4
+valid_state_num = len(state_dict)/5
 policy = funcs2.extractPolicy(Qmatrix, valid_state_num)
