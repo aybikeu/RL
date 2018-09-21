@@ -7,6 +7,9 @@ import random
 import networkx as nx
 import SNEBC
 from copy import copy
+import random
+
+random.seed(42)
 
 def buildEnvironment(explored_states, state_dict, G, G2, G_disrupted, ActionList, supply_nodes):
 
@@ -36,7 +39,7 @@ def buildEnvironment(explored_states, state_dict, G, G2, G_disrupted, ActionList
     return first_state, actions, Schedule, reachable_nodes
 
 def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_alphaMatrix, G_restored, G2, G, EdgeList, reachable_nodes,
-           ActionList, dist, phi_sa, total_debris, total_supply, explored_states, state_dict, id_dict, id_counter):
+           ActionList, dist, phi_sa, total_debris, total_supply, explored_states, state_dict, id_dict, id_counter, betw_centrality):
 
     #These parameters are very likely that they are not being used
     epsilon = 0.3
@@ -61,13 +64,14 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     #betw centrality is just used to create the basis for s,a - if already calculated then don't redo it
     #Its not in constructfeatures function because it had to be done before updating G_restored etc
     try:
-        phi_sa[(first_state.ID, action)]
+        betw_centrality[first_state.ID]
     except:
         G_collapsed = nx.condensation(G_restored.to_directed())
         demand_collapsed , supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, first_state.rem_demand, first_state.rem_supply, G2)
         betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
         betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
         betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
+        betw_centrality[first_state.ID] = betw_edges # betw cenrality for all the actions(edges) in each state
 
     ######### Realize the new state and get its information #########
     #################################################################
@@ -75,14 +79,15 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     new_node, discovered_nodes = funcs2.get_newReachableNode(set(reachable_nodes), action, ActionList, G_restored, G2)
 
     #Update the action list by adding the new_node's connections
-    funcs2.updateActions(new_node, actions, ActionList, G)
+    if new_node is not None:
+        funcs2.updateActions(new_node, actions, ActionList, G)
 
-    #Find from which supply locations the new_node is accessible
-    connected_supply = first_state.establishSupplyConnection(new_node, G_restored)
+        #Find from which supply locations the new_node is accessible
+        connected_supply = first_state.establishSupplyConnection(new_node, G_restored)
 
-    #If the newly found node connects supplies - then supply transfer
-    if len(connected_supply) > 1:
-        first_state.transferSupply(connected_supply)
+        #If the newly found node connects supplies - then supply transfer
+        if len(connected_supply) > 1:
+            first_state.transferSupply(connected_supply)
 
     #Get the resource usage and update remaining debris amounts
     new_rem_debris, resource_usage = first_state.updateDebris(action)
@@ -95,7 +100,7 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     #Construct features
     #Not yet demand is realized and not allocated yet
     phi_sa = funcs2.constructfeatures(first_state, action, phi_sa, ActionList, period,
-                      resource_usage,  total_debris,  betw_edges )
+                      resource_usage,  total_debris,  betw_centrality[first_state.ID])
 
     # First realize demand then allocate supply immediately
     new_rem_demand, new_rem_supply, satisfied_demand, dem = first_state.realizeDemand(new_node, dist, connected_supply, G_restored, Cost, reachable_nodes)
@@ -133,9 +138,9 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
 
     #construct features for the new_state so that you can calculate the predicted Q_values
 
-    return action,id_counter, new_state, reward, period, actions
+    return phi_sa, action,id_counter, new_state, reward, period, actions, betw_centrality
 
-def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, EdgeList, G2, total_debris, actions):
+def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, EdgeList, G2, total_debris, actions, betw_centrality):
 
     BasisMatrix = []
     done_actions = [i for i, val in enumerate(new_state.rem_debris) if val ==0] #Not cleared roads
@@ -143,7 +148,7 @@ def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, Edg
 
     for action in eligible_actions:
         try:
-            phi_sa[(new_state.ID, action)]
+            betw_centrality[new_state.ID]
         except:
             G_collapsed = nx.condensation(G_restored.to_directed())
             demand_collapsed, supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, new_state.rem_demand,
@@ -151,12 +156,13 @@ def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, Edg
             betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
             betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
             betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
+            betw_centrality[new_state.ID]= betw_edges
 
         resource_usage = new_state.rem_debris[action]
         period = funcs2.getPeriod(cum_resource, resource_usage)
         phi_sa = funcs2.constructfeatures(new_state, action, phi_sa, ActionList, period,
-                                          resource_usage, total_debris, betw_edges)
+                                          resource_usage, total_debris, betw_centrality[new_state.ID])
 
         BasisMatrix.append(np.asarray(phi_sa[(new_state.ID, action)]))
 
-    return phi_sa, eligible_actions, BasisMatrix
+    return phi_sa, eligible_actions, BasisMatrix, betw_centrality

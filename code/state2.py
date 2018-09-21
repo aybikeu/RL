@@ -146,7 +146,7 @@ class State():
     def transferSupply(self, connected_supply):
 
         #Pick the supply node with lowest index that all supply that is going to be transfered
-        sf = connected_supply.sort()[0]
+        sf = sorted(connected_supply)[0]
         tot = np.asarray(self.rem_supply)[connected_supply].sum()
         self.rem_supply[sf] = tot
 
