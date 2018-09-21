@@ -38,7 +38,9 @@ df['period_nonlinear'] = df['period'].apply(lambda x: np.exp(-0.2*x))
 #features = ['degree', 'betw', 'resource','demand','collected debris', 'period_nonlinear']
 # features = ['Action Betw','resource','satisfied demand', 'mean rem demand','actual rem demand','collected debris',
 #             'satisfied demand','period', 'exponential period', 'degree']
-features = ['actual rem demand','satisfied demand','collected debris', 'resource']
+
+features = [0,1,4,5]
+#features = ['actual rem demand','satisfied demand','collected debris', 'resource']
 
 df['actual first rem'] = df['actual rem demand'] + df['satisfied demand']
 
