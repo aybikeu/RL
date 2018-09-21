@@ -22,7 +22,7 @@ import sampleSimulation as sim
 #
 # n_features = len(features)
 
-n_features = 4
+n_features = 5
 theta = np.ones(n_features)
 
 EdgeList = [(0,1), (0,2), (1,2), (1,3),
@@ -85,6 +85,7 @@ state_dict = {}
 explored_states = []
 resource = 1
 phi_sa = {}
+betw_centrality = {}
 
 state_dict[(0, 'demand')] = initial_demand
 state_dict[(0, 'debris')] = initial_debris
@@ -112,15 +113,15 @@ for _ in range(10000):
 
     state, actions, Schedule, reachable_nodes = sim.buildEnvironment(explored_states, state_dict, G, G2, G_restored, ActionList, supply_nodes)
 
-    action, id_counter, new_state, reward, period, actions = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_restored, G2, G, EdgeList, reachable_nodes,
-                                                                               ActionList, dist, phi_sa, total_debris, total_supply, explored_states, state_dict, id_dict, id_counter)
+    phi_sa, action, id_counter, new_state, reward, period, actions, betw_centrality = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_restored, G2, G, EdgeList, reachable_nodes,
+                                                                               ActionList, dist, phi_sa, total_debris, total_supply, explored_states, state_dict, id_dict, id_counter, betw_centrality)
 
-    phi_sa, action_order, Basis = sim.new_state_basis(new_state,phi_sa, ActionList, state.cum_resource, G_restored, EdgeList, G2, total_debris, actions)
+    phi_sa, action_order, Basis, betw_centrality = sim.new_state_basis(new_state,phi_sa, ActionList, state.cum_resource, G_restored, EdgeList, G2, total_debris, actions, betw_centrality)
 
-    Q_pred_new_state = Basis * theta
+    Q_pred_new_state = np.dot(Basis,theta)
     max_q = max(Q_pred_new_state)
-    m_i = Q_pred_new_state.index(max_q)
-    action_max = action_order[m_i]
+    # m_i = Q_pred_new_state.index(max_q)
+    # action_max = action_order[m_i]
 
     Qmatrix_previous = Qmatrix.copy() #Store Qmatrix's previous values
 
@@ -134,11 +135,11 @@ for _ in range(10000):
     #Qmatrix = funcs2.updatePredQ(Qmatrix, action, state, new_state, reward, theta, phi_sa)
 
     #theta_next = theta + step_size*((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa,theta))*basis_sa)
-    theta_next = theta + step_size * ((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa, theta)) * basis_sa)
+    theta_next = theta + step_size * ((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa, theta)) * bas)
 
-    # diff_theta = theta_next - theta
-    # print('Difference between thetas:', sum(diff_theta))
-    # theta = theta_next
+    diff_theta = theta_next - theta
+    print('Difference between thetas:', sum(diff_theta))
+    theta = theta_next
 
 
 #Extract the optimal policy: action for each state

@@ -1,0 +1,1144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ea3daf96-04de-4595-a209-bc591d40ed44" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/RL.iml" afterPath="$PROJECT_DIR$/.idea/RL.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/LinearApproximation.py" afterPath="$PROJECT_DIR$/code/LinearApproximation.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/SupDem_Allocation.lp" afterPath="$PROJECT_DIR$/code/SupDem_Allocation.lp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/funcs2.py" afterPath="$PROJECT_DIR$/code/funcs2.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/sampleSimulation.py" afterPath="$PROJECT_DIR$/code/sampleSimulation.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/state2.py" afterPath="$PROJECT_DIR$/code/state2.py" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/RL$QFactorVI.coverage" NAME="QFactorVI Coverage Results" MODIFIED="1537202238076" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
+    <SUITE FILE_PATH="coverage/RL$Main2.coverage" NAME="Main2 Coverage Results" MODIFIED="1537198868474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
+    <SUITE FILE_PATH="coverage/RL$ApproximationRun.coverage" NAME="ApproximationRun Coverage Results" MODIFIED="1537535507220" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
+    <SUITE FILE_PATH="coverage/RL$LinearApproximation.coverage" NAME="LinearApproximation Coverage Results" MODIFIED="1537463687769" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="LinearApproximation.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/LinearApproximation.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="292">
+              <caret line="123" column="34" lean-forward="false" selection-start-line="123" selection-start-column="34" selection-end-line="123" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sampleSimulation.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/sampleSimulation.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="732">
+              <caret line="163" column="77" lean-forward="false" selection-start-line="163" selection-start-column="77" selection-end-line="163" selection-end-column="77" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Main2.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/Main2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4444">
+              <caret line="217" column="46" lean-forward="false" selection-start-line="217" selection-start-column="46" selection-end-line="217" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="funcs2.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/funcs2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1650">
+              <caret line="82" column="30" lean-forward="false" selection-start-line="82" selection-start-column="30" selection-end-line="82" selection-end-column="30" />
+              <folding>
+                <element signature="e#1#19#0" expanded="true" />
+                <marker date="1537536988175" expanded="true" signature="499:1403" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="1457:1952" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="1615:1728" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="1748:1952" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="1796:1952" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="1999:2060" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="2141:2549" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="2634:2943" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="2681:2906" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="2944:3224" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="3257:3325" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="3369:3569" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="3676:3969" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="3732:3946" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="3797:3946" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="3833:3946" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="4048:5097" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="4694:5005" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="4747:5005" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="4809:5005" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="5131:5339" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="5395:6616" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="5507:5592" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="5741:6034" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="6073:6570" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="6193:6570" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="6210:6421" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="6451:6570" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="6964:7071" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="7225:7358" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="7432:8083" ph="..." />
+                <marker date="1537536988175" expanded="true" signature="8195:8395" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QFactorVI.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/QFactorVI.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="968">
+              <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ApproximationRun.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/code/ApproximationRun.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1188">
+              <caret line="54" column="17" lean-forward="true" selection-start-line="54" selection-start-column="17" selection-end-line="54" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SNEBC.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/SNEBC.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1782">
+              <caret line="81" column="4" lean-forward="false" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
+              <folding>
+                <element signature="e#1#36#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scrap.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/scrap.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="state2.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/state2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2332">
+              <caret line="106" column="8" lean-forward="false" selection-start-line="106" selection-start-column="8" selection-end-line="106" selection-end-column="67" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+                <marker date="1537536988177" expanded="true" signature="152:5852" ph="..." />
+                <marker date="1537536988177" expanded="true" signature="5540:5852" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>csv</find>
+      <find>obj_list</find>
+      <find>SNE</find>
+      <find>n_node</find>
+      <find>rule</find>
+      <find>pr</find>
+      <find>G_dis</find>
+      <find>reali</find>
+      <find>CONSTR</find>
+      <find>suppl</find>
+      <find>sample</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/code/SNEBC.py" />
+        <option value="$PROJECT_DIR$/code/QFactorVI.py" />
+        <option value="$PROJECT_DIR$/code/Main2.py" />
+        <option value="$PROJECT_DIR$/code/state2.py" />
+        <option value="$PROJECT_DIR$/code/funcs2.py" />
+        <option value="$PROJECT_DIR$/code/LinearApproximation.py" />
+        <option value="$PROJECT_DIR$/code/ApproximationRun.py" />
+        <option value="$PROJECT_DIR$/code/sampleSimulation.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1176" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data_files" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="RL" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="code" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.ApproximationRun">
+    <configuration default="false" name="ApproximationRun" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/code/ApproximationRun.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Main2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/code/Main2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="QFactorVI" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/code/QFactorVI.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="LinearApproximation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/code/LinearApproximation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <module name="RL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="RL" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method />
+    </configuration>
+    <list size="4">
+      <item index="0" class="java.lang.String" itemvalue="Python.ApproximationRun" />
+      <item index="1" class="java.lang.String" itemvalue="Python.Main2" />
+      <item index="2" class="java.lang.String" itemvalue="Python.QFactorVI" />
+      <item index="3" class="java.lang.String" itemvalue="Python.LinearApproximation" />
+    </list>
+    <recent_temporary>
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Python.ApproximationRun" />
+        <item index="1" class="java.lang.String" itemvalue="Python.LinearApproximation" />
+        <item index="2" class="java.lang.String" itemvalue="Python.QFactorVI" />
+        <item index="3" class="java.lang.String" itemvalue="Python.Main2" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ea3daf96-04de-4595-a209-bc591d40ed44" name="Default" comment="" />
+      <created>1535473062776</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1535473062776</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15191898" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.020628683" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24557957" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27013752" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23240939" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907662" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Concurrent Activities Diagram" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907662" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24557957" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.020628683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907662" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Concurrent Activities Diagram" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907662" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2691552" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13219616" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <condition expression="new_state.ID==624" language="Python" />
+          <url>file://$PROJECT_DIR$/code/Main2.py</url>
+          <line>277</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/code/QFactorVI.py</url>
+          <line>38</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/code/ApproximationRun.py</url>
+          <line>88</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/code/LinearApproximation.py</url>
+          <line>140</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/code/LinearApproximation.py</url>
+          <line>130</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/code/sampleSimulation.py</url>
+          <line>165</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="64" />
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="G_collapsed" />
+        <watch expression="G_disrupted" />
+        <watch expression="Qmatrix" />
+        <watch expression="state" />
+        <watch expression="phi_sa" />
+        <watch expression="explored_states" />
+        <watch expression="new_state.ID" />
+        <watch expression="action" />
+        <watch expression="id_counter" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/code/LinearApproximation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2684">
+          <caret line="122" column="34" lean-forward="true" selection-start-line="122" selection-start-column="34" selection-end-line="122" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Main2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4444">
+          <caret line="217" column="46" lean-forward="false" selection-start-line="217" selection-start-column="46" selection-end-line="217" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/funcs2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1650">
+          <caret line="75" column="30" lean-forward="false" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
+          <folding>
+            <element signature="e#1#19#0" expanded="true" />
+            <marker date="1537536988175" expanded="true" signature="499:1403" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1457:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1615:1728" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1748:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1796:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1999:2060" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2141:2549" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2634:2943" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2681:2906" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2944:3224" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3257:3325" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3369:3569" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3676:3969" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3732:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3797:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3833:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4048:5097" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4694:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4747:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4809:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5131:5339" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5395:6616" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5507:5592" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5741:6034" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6073:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6193:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6210:6421" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6451:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6964:7071" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="7225:7358" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="7432:8083" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="8195:8395" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/QFactorVI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="968">
+          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/ApproximationRun.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1122">
+          <caret line="51" column="7" lean-forward="true" selection-start-line="51" selection-start-column="7" selection-end-line="51" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/SNEBC.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1782">
+          <caret line="81" column="4" lean-forward="false" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
+          <folding>
+            <element signature="e#1#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/scrap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/state2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2332">
+          <caret line="106" column="8" lean-forward="false" selection-start-line="106" selection-start-column="8" selection-end-line="106" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <marker date="1537536988177" expanded="true" signature="152:5852" ph="..." />
+            <marker date="1537536988177" expanded="true" signature="5540:5852" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/sampleSimulation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3300">
+          <caret line="157" column="77" lean-forward="false" selection-start-line="157" selection-start-column="77" selection-end-line="157" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/LinearApproximation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/sampleSimulation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3498">
+          <caret line="159" column="70" lean-forward="false" selection-start-line="159" selection-start-column="70" selection-end-line="159" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Main2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4774">
+          <caret line="217" column="46" lean-forward="true" selection-start-line="217" selection-start-column="46" selection-end-line="217" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/funcs2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1518">
+          <caret line="75" column="30" lean-forward="true" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
+          <folding>
+            <element signature="e#1#19#0" expanded="true" />
+            <marker date="1537536988175" expanded="true" signature="499:1403" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1457:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1615:1728" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1748:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1796:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1999:2060" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2141:2549" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2634:2943" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2681:2906" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2944:3224" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3257:3325" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3369:3569" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3676:3969" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3732:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3797:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3833:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4048:5097" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4694:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4747:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4809:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5131:5339" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5395:6616" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5507:5592" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5741:6034" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6073:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6193:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6210:6421" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6451:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6964:7071" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="7225:7358" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="7432:8083" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="8195:8395" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/QFactorVI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="968">
+          <caret line="44" column="0" lean-forward="true" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/ApproximationRun.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="924">
+          <caret line="42" column="15" lean-forward="false" selection-start-line="42" selection-start-column="15" selection-end-line="42" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/SNEBC.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1694">
+          <caret line="81" column="4" lean-forward="false" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
+          <folding>
+            <element signature="e#1#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/scrap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/state2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2332">
+          <caret line="106" column="8" lean-forward="false" selection-start-line="106" selection-start-column="8" selection-end-line="106" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <marker date="1537536988177" expanded="true" signature="152:5852" ph="..." />
+            <marker date="1537536988177" expanded="true" signature="5540:5852" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/funcs.py" />
+    <entry file="file://$PROJECT_DIR$/code/scrap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Main_QLearningwLookupTable.py" />
+    <entry file="file://C:/Python27/Lib/site-packages/pandas/core/indexing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="1541" column="0" lean-forward="false" selection-start-line="1541" selection-start-column="0" selection-end-line="1541" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/QFactorVI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="572">
+          <caret line="44" column="0" lean-forward="true" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/pandas/core/internals.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="2810" column="18" lean-forward="true" selection-start-line="2810" selection-start-column="18" selection-end-line="2810" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/ApproximationRun.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="49" column="21" lean-forward="true" selection-start-line="49" selection-start-column="21" selection-end-line="49" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/SNEBC.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-154">
+          <caret line="23" column="10" lean-forward="true" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
+          <folding>
+            <element signature="e#1#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/state2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <marker date="1537536988177" expanded="true" signature="152:5852" ph="..." />
+            <marker date="1537536988177" expanded="true" signature="5540:5852" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Main2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="146" column="8" lean-forward="false" selection-start-line="146" selection-start-column="8" selection-end-line="146" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/LinearApproximation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="117" column="0" lean-forward="false" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/sampleSimulation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-189">
+          <caret line="65" column="0" lean-forward="true" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/funcs2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1615">
+          <caret line="265" column="9" lean-forward="false" selection-start-line="265" selection-start-column="9" selection-end-line="265" selection-end-column="9" />
+          <folding>
+            <element signature="e#1#19#0" expanded="true" />
+            <marker date="1537536988175" expanded="true" signature="499:1403" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1457:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1615:1728" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1748:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1796:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1999:2060" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2141:2549" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2634:2943" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2681:2906" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2944:3224" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3257:3325" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3369:3569" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3676:3969" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3732:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3797:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3833:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4048:5097" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4694:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4747:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4809:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5131:5339" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5395:6616" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5507:5592" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5741:6034" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6073:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6193:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6210:6421" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6451:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6964:7071" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="7225:7358" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="7432:8083" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="8195:8395" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/funcs.py" />
+    <entry file="file://$PROJECT_DIR$/code/scrap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Main_QLearningwLookupTable.py" />
+    <entry file="file://C:/Python27/Lib/site-packages/pandas/core/indexing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="1541" column="0" lean-forward="false" selection-start-line="1541" selection-start-column="0" selection-end-line="1541" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/pandas/core/internals.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="2810" column="18" lean-forward="true" selection-start-line="2810" selection-start-column="18" selection-end-line="2810" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/SNEBC.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1782">
+          <caret line="81" column="4" lean-forward="false" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
+          <folding>
+            <element signature="e#1#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/QFactorVI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="968">
+          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/state2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2332">
+          <caret line="106" column="8" lean-forward="false" selection-start-line="106" selection-start-column="8" selection-end-line="106" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+            <marker date="1537536988177" expanded="true" signature="152:5852" ph="..." />
+            <marker date="1537536988177" expanded="true" signature="5540:5852" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Main2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4444">
+          <caret line="217" column="46" lean-forward="false" selection-start-line="217" selection-start-column="46" selection-end-line="217" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/funcs2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1650">
+          <caret line="82" column="30" lean-forward="false" selection-start-line="82" selection-start-column="30" selection-end-line="82" selection-end-column="30" />
+          <folding>
+            <element signature="e#1#19#0" expanded="true" />
+            <marker date="1537536988175" expanded="true" signature="499:1403" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1457:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1615:1728" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1748:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1796:1952" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="1999:2060" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2141:2549" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2634:2943" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2681:2906" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="2944:3224" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3257:3325" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3369:3569" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3676:3969" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3732:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3797:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="3833:3946" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4048:5097" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4694:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4747:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="4809:5005" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5131:5339" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5395:6616" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5507:5592" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="5741:6034" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6073:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6193:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6210:6421" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6451:6570" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="6964:7071" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="7225:7358" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="7432:8083" ph="..." />
+            <marker date="1537536988175" expanded="true" signature="8195:8395" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/sampleSimulation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="732">
+          <caret line="163" column="77" lean-forward="false" selection-start-line="163" selection-start-column="77" selection-end-line="163" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/LinearApproximation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="123" column="34" lean-forward="false" selection-start-line="123" selection-start-column="34" selection-end-line="123" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/ApproximationRun.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1188">
+          <caret line="54" column="17" lean-forward="true" selection-start-line="54" selection-start-column="17" selection-end-line="54" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

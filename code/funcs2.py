@@ -30,6 +30,13 @@ def get_newReachableNode(reachable_nodes, action, ActionList, G_collapsed, G2):
 
     # if new node is not in reachable set - add it to the list
     # Because an edge both end nodes that are reachable can be picked as action
+    # if new_node not in reachable_nodes:
+    #     new_reachable_nodes = reachable_nodes.copy()
+    #     new_reachable_nodes.add(new_node)
+    # else:
+    #     new_reachable_nodes = reachable_nodes.copy()
+    #     new_node = None
+
     new_reachable_nodes = reachable_nodes.copy()
     new_reachable_nodes.add(new_node)
 
