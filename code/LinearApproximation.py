@@ -13,17 +13,10 @@ from copy import copy
 import SNEBC
 import sampleSimulation as sim
 
-#basis = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_1R2.csv', sep=',')
-# basis = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
-# basis.set_index('Unnamed: 0', inplace=True)
-# basis['period_nonlinear'] = basis['period'].apply(lambda x: np.exp(-0.2*x))
-#
-# features = ['actual rem demand','satisfied demand','collected debris', 'resource']
-#
-# n_features = len(features)
 
 n_features = 5
-theta = np.ones(n_features)
+#Put the intercept as an extra feature
+theta = np.ones(n_features + 1)
 
 EdgeList = [(0,1), (0,2), (1,2), (1,3),
             (2,3), (2,4), (3,4)]
@@ -102,7 +95,21 @@ explored_states.append(initial_state.ID)
 
 step_size = 0.1
 
-for _ in range(10000):
+# Get the actual optimal calculated to see if GD is working
+df_q = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS2.csv', sep=',')
+df_q.set_index('Unnamed: 0', inplace=True)
+
+df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
+df.set_index('Unnamed: 0', inplace=True)
+
+q_column = pd.DataFrame(index=df.index.copy(), columns=['q_val'])
+for i, row in df.iterrows():
+    i_str = i[1:-1]
+    st , act = i_str.split(',')
+    q_column.loc[i]['q_val'] = df_q.iloc[int(st)][int(act)]
+
+
+for iteration_no in range(10000):
 
 
     G_restored = nx.Graph()
@@ -128,17 +135,18 @@ for _ in range(10000):
     Qmatrix.iloc[state.ID][action] = reward + max_q
 
     #basis_sa = basis.query('s== {} & a=={}'.format(state.ID, action))
-    basis_sa = phi_sa[(state.ID, action)]
-    bas = np.asarray(basis_sa)
+    bas = np.asarray(phi_sa[(state.ID, action)])
     #basis_sa = bas[[2,4,5,6]]  #Get the necessary features
 
     #Qmatrix = funcs2.updatePredQ(Qmatrix, action, state, new_state, reward, theta, phi_sa)
 
-    #theta_next = theta + step_size*((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa,theta))*basis_sa)
-    theta_next = theta + step_size * ((Qmatrix.iloc[state.ID][action] - np.dot(basis_sa, theta)) * bas)
+    #target = Qmatrix.iloc[state.ID][action]
+    #target = q_column.loc[str((state.ID, action))]['q_val'] #this is the optimal Q value calc from value iteration
+    target = funcs2.Qtarget(state.ID,id_dict,action,q_column)
+    error = target - np.dot(bas, theta)
+    theta_next = theta + (0.001 * (error * bas))
 
-    diff_theta = theta_next - theta
-    print('Difference between thetas:', sum(diff_theta))
+    print('Iteration {} - Error:'.format(iteration_no), error)
     theta = theta_next
 
 

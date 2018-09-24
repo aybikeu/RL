@@ -147,21 +147,26 @@ def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, Edg
     eligible_actions = actions - set(done_actions)
 
     for action in eligible_actions:
-        try:
-            betw_centrality[new_state.ID]
-        except:
-            G_collapsed = nx.condensation(G_restored.to_directed())
-            demand_collapsed, supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, new_state.rem_demand,
-                                                                                     new_state.rem_supply, G2)
-            betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
-            betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
-            betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
-            betw_centrality[new_state.ID]= betw_edges
 
-        resource_usage = new_state.rem_debris[action]
-        period = funcs2.getPeriod(cum_resource, resource_usage)
-        phi_sa = funcs2.constructfeatures(new_state, action, phi_sa, ActionList, period,
-                                          resource_usage, total_debris, betw_centrality[new_state.ID])
+        try:
+            phi_sa[(new_state.ID,action)]
+        except:
+            try:
+                betw_centrality[new_state.ID]
+            except:
+                G_collapsed = nx.condensation(G_restored.to_directed())
+                demand_collapsed, supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, new_state.rem_demand,
+                                                                                         new_state.rem_supply, G2)
+                betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
+                betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
+                betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
+                betw_centrality[new_state.ID]= betw_edges
+
+            resource_usage = new_state.rem_debris[action]
+            period = funcs2.getPeriod(cum_resource, resource_usage)
+            phi_sa = funcs2.constructfeatures(new_state, action, phi_sa, ActionList, period,
+                                              resource_usage, total_debris, betw_centrality[new_state.ID])
+
 
         BasisMatrix.append(np.asarray(phi_sa[(new_state.ID, action)]))
 

@@ -2,8 +2,8 @@
 Maximize
 OBJ: x_0_3
 Subject To
-_C1: x_0_3 <= 7
-_C2: x_0_3 <= 4
+_C1: x_0_3 <= 5
+_C2: x_0_3 <= 3
 Bounds
 0 <= x_0_3
 Generals

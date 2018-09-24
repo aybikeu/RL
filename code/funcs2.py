@@ -255,6 +255,21 @@ def constructfeatures(first_state, action, phi_sa, ActionList, period,
         ###--------------------------- 6 ---------------------------###
         phi_sa[(first_state.ID, action)].append(np.exp(-0.2 * period))
 
+        ### ----------------------------- 7 -------------------------####
+        ### INTERCEPT
+        phi_sa[(first_state.ID, action)].insert(0,1)
+
 
     return phi_sa
 
+def Qtarget(state_id, id_dict, action, q_column):
+    df = pd.read_csv('C:\Users\ulusan.a\Desktop\RL_rep\RL\data_files\state_mapper_INS2.csv', header=None)
+    df.columns=['hash','state_id']
+
+    hash_id = [key for key, val in id_dict.items() if val == state_id][0]
+    df_hash = df.query('hash=={}'.format(hash_id))
+    corresp_id = int(df_hash['state_id'])
+    target = q_column.loc[str((corresp_id, action))]['q_val']
+
+
+    return target
