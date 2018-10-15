@@ -23,7 +23,7 @@ def get_newReachableNode(reachable_nodes, action, ActionList, G_collapsed, G2):
 
     G_collapsed.add_edge(ed[0],ed[1])
 
-    for node in reachable_nodes: #There is always going to be 1 node newly discovered - because the network is always composed of debris edges
+    for node in reachable_nodes:
         for n in range(2):
             if node == ed[n]:
                 new_node = ed[abs(1 - n)]
@@ -111,10 +111,10 @@ def getReward (period, satisfied_demand):
 #def optimalPolicy(QMatrix):
 
 
-def updateCost (new_node, connected_sup, demand_nodes, G_collapsed, Cost):
+def updateCost (new_node, connected_sup, demand_nodes, G_restored, Cost):
     check = 0
     for potential_demand in demand_nodes:
-        if nx.has_path(G_collapsed, new_node, potential_demand):
+        if nx.has_path(G_restored, new_node, potential_demand):
             for s in connected_sup:
                 Cost[s,potential_demand]=1 #Set the connection
                 check=1 #The check for the update
@@ -213,23 +213,30 @@ def fixcondensation(G_collapsed, demand, supply, G2):
     return demandvec, supplyvec, G_collapsed
 
 def constructfeatures(first_state, action, phi_sa, ActionList, period,
-                      resource_usage,  total_debris,  betw_edges ):
+                      resource_usage,  total_debris,  betw_edges, period_before, total_supply ):
     try: # if the basis is already constructed, no need to do the same calculations again
         phi_sa[(first_state.ID, action)]
+        new_phi_check = 0
     except KeyError:
+
+        new_phi_check = 1
         phi_sa[(first_state.ID, action)] = []
 
         ###--------------------------- 1 ----------------------------####
+        ### INTERCEPT
+        phi_sa[(first_state.ID, action)].insert(0,1)
 
+
+        ###--------------------------- 2 ---------------------------###
         # Add SNEBC measure for s,a pair
         act = [key for key, value in ActionList.items() if value == action][0]
         phi_sa[(first_state.ID, action)].append(betw_edges[act])
 
-        ###--------------------------- 2 ---------------------------###
+        ###--------------------------- 3 ---------------------------###
         #amount of resource usage (debris amount) on the action(road)
         phi_sa[(first_state.ID, action)].append(resource_usage)
 
-        ###--------------------------- 3 ---------------------------### THIS IS A STATE PROPERTY THOUGH
+        ###--------------------------- 4 ---------------------------### THIS IS A STATE PROPERTY THOUGH
         # Even if the new reached node is not a demand point it can be connected to other demand
         # via unblocked roads - hence should be taken into account
         # The amount of satisfied demand is going to change - hence binary makes more sense
@@ -240,27 +247,26 @@ def constructfeatures(first_state, action, phi_sa, ActionList, period,
         # else:
         #     phi_sa[(first_state.ID, action)].append(0)
 
-        phi_sa[(first_state.ID, action)].append(sum(first_state.rem_demand))  # Total realized demand
+        phi_sa[(first_state.ID, action)].append(sum(first_state.rem_demand))  # Total actual (realized) remaining demand
         #phi_sa[(first_state.ID, action)].append(np.count_nonzero(np.asarray(first_state.rem_demand)) * 3)  # total expected rem_demand
 
-        ###--------------------------- 4 ---------------------------###
+        ###--------------------------- 5 ---------------------------###
         debris_feature = total_debris - sum(first_state.rem_debris)  # This is the debris cleared until now
         phi_sa[(first_state.ID, action)].append(debris_feature)  # Total cleared debris until now
 
-        ###--------------------------- 5 ---------------------------###
-
-        # demand_feature = total_supply - sum(first_state.rem_supply)  # This is the total demand satisfied until now
-        # phi_sa[(first_state.ID, action)].append(demand_feature)  # Total satisfied demand until now
-
         ###--------------------------- 6 ---------------------------###
+
+        demand_feature = total_supply - sum(first_state.rem_supply)  # This is the total demand satisfied until now
+        phi_sa[(first_state.ID, action)].append(demand_feature)  # Total satisfied demand until now
+
+        ###--------------------------- 7 ---------------------------###
+        phi_sa[(first_state.ID, action)].append(np.exp(-0.2 * period_before))
+
+        ### ----------------------------- 8 -------------------------####
         phi_sa[(first_state.ID, action)].append(np.exp(-0.2 * period))
 
-        ### ----------------------------- 7 -------------------------####
-        ### INTERCEPT
-        phi_sa[(first_state.ID, action)].insert(0,1)
 
-
-    return phi_sa
+    return phi_sa, new_phi_check
 
 def Qtarget(state_id, id_dict, action, q_column):
     df = pd.read_csv('C:\Users\ulusan.a\Desktop\RL_rep\RL\data_files\state_mapper_INS2.csv', header=None)

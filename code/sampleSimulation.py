@@ -94,13 +94,14 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
 
     first_state.cum_resource = first_state.cum_resource + resource_usage
 
+    period_before = period
     #Update the planning horizon and resource amounts
     period = funcs2.getPeriod(first_state.cum_resource, resource)
 
     #Construct features
     #Not yet demand is realized and not allocated yet
-    phi_sa = funcs2.constructfeatures(first_state, action, phi_sa, ActionList, period,
-                      resource_usage,  total_debris,  betw_centrality[first_state.ID])
+    phi_sa, new_phi_check = funcs2.constructfeatures(first_state, action, phi_sa, ActionList, period,
+                      resource_usage,  total_debris,  betw_centrality[first_state.ID], period_before, total_supply)
 
     # First realize demand then allocate supply immediately
     new_rem_demand, new_rem_supply, satisfied_demand, dem = first_state.realizeDemand(new_node, dist, connected_supply, G_restored, Cost, reachable_nodes)
@@ -140,7 +141,7 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
 
     return phi_sa, action,id_counter, new_state, reward, period, actions, betw_centrality
 
-def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, EdgeList, G2, total_debris, actions, betw_centrality):
+def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, EdgeList, G2, total_debris, actions, betw_centrality, total_supply):
 
     BasisMatrix = []
     done_actions = [i for i, val in enumerate(new_state.rem_debris) if val ==0] #Not cleared roads
@@ -164,8 +165,10 @@ def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, Edg
 
             resource_usage = new_state.rem_debris[action]
             period = funcs2.getPeriod(cum_resource, resource_usage)
-            phi_sa = funcs2.constructfeatures(new_state, action, phi_sa, ActionList, period,
-                                              resource_usage, total_debris, betw_centrality[new_state.ID])
+            period_before = funcs2.getPeriod(cum_resource, 0)
+
+            phi_sa, new_phi_check = funcs2.constructfeatures(new_state, action, phi_sa, ActionList, period,
+                                              resource_usage, total_debris, betw_centrality[new_state.ID], period_before, total_supply)
 
 
         BasisMatrix.append(np.asarray(phi_sa[(new_state.ID, action)]))

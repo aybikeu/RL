@@ -108,6 +108,7 @@ for i, row in df.iterrows():
     st , act = i_str.split(',')
     q_column.loc[i]['q_val'] = df_q.iloc[int(st)][int(act)]
 
+q_column.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/q_columns_INS2.csv')
 
 for iteration_no in range(10000):
 
@@ -123,7 +124,7 @@ for iteration_no in range(10000):
     phi_sa, action, id_counter, new_state, reward, period, actions, betw_centrality = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_restored, G2, G, EdgeList, reachable_nodes,
                                                                                ActionList, dist, phi_sa, total_debris, total_supply, explored_states, state_dict, id_dict, id_counter, betw_centrality)
 
-    phi_sa, action_order, Basis, betw_centrality = sim.new_state_basis(new_state,phi_sa, ActionList, state.cum_resource, G_restored, EdgeList, G2, total_debris, actions, betw_centrality)
+    phi_sa, action_order, Basis, betw_centrality = sim.new_state_basis(new_state,phi_sa, ActionList, state.cum_resource, G_restored, EdgeList, G2, total_debris, actions, betw_centrality, total_supply)
 
     Q_pred_new_state = np.dot(Basis,theta)
     max_q = max(Q_pred_new_state)

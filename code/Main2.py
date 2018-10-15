@@ -133,6 +133,7 @@ obj_list4=[]
 obj_list33=[]
 
 phi_sa = {}
+betw_centrality = {}
 
 explored_states = []
 
@@ -199,28 +200,27 @@ for e in range(int(n_episodes)):
 
     actions = funcs2.initializeActionSpace(reachable_nodes, G, ActionList)  # actions are the admissable action indices corresponding in ActionList
 
-    sas_vec.append(first_state.ID)
+    ############sas_vec.append(first_state.ID)
     while remaining_demand:
-
-        ########## Create some state related features before an action is taken and the next state is reached
-        debris_feature = total_debris - sum(first_state.rem_debris)  # This is the debris cleared until now
-        demand_feature = total_supply - sum(first_state.rem_supply) #This is the total demand satisfied until now
-
 
         #Choose action
         action = first_state.choose_action(epsilon, Qmatrix, actions, Schedule, rule, T, Q_alphaMatrix, e)
 
         Schedule.append(action)
-        sas_vec.append(action)
+        #########sas_vec.append(action)
 
         ## Vertex collapse - condense the network
         #For large sized instances calculating sp can be hard
-        G_collapsed = nx.condensation(G_restored.to_directed())
-        demand_collapsed , supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, first_state.rem_demand, first_state.rem_supply, G2)
+        try:
+            betw_centrality[first_state.ID]
+        except:
+            G_collapsed = nx.condensation(G_restored.to_directed())
+            demand_collapsed , supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, first_state.rem_demand, first_state.rem_supply, G2)
 
-        betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
-        betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
-        betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
+            betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
+            betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
+            betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
+            betw_centrality[first_state.ID] = betw_edges  # betw cenrality for all the actions(edges) in each state
 
         ######### Realize the new state and get its information #########
         #################################################################
@@ -238,31 +238,37 @@ for e in range(int(n_episodes)):
             first_state.transferSupply(connected_supply)
 
 
-        # First realize demand then allocate supply immediately
-        new_rem_demand, new_rem_supply, satisfied_demand, dem = first_state.realizeDemand(new_node, dist, connected_supply, G_restored, Cost, reachable_nodes)
 
         #Get the resource usage and update remaining debris amounts
         new_rem_debris, resource_usage = first_state.updateDebris(action)
 
         first_state.cum_resource = first_state.cum_resource + resource_usage
 
+        period_before = period
         #Update the planning horizon and resource amounts
         period = funcs2.getPeriod(first_state.cum_resource, resource)
 
         #Construct features
+        #Before realizing demand so that you can omit the effect of the action taken & realization
+        phi_sa, new_phi_check = funcs2.constructfeatures(first_state, action, phi_sa, ActionList, period,
+                                          resource_usage, total_debris, betw_centrality[first_state.ID], period_before, total_supply)
 
-        # phi_sa = funcs2.constructfeatures(first_state, action, phi_sa, discovered_nodes, reachable_nodes,
-        #                                   G2, new_node, ActionList, debris_feature, demand_feature, period, resource_usage,
-        #                                   satisfied_demand, betw_edges)
+        # Realize demand then allocate supply immediately
+        new_rem_demand, new_rem_supply, satisfied_demand, dem = first_state.realizeDemand(new_node, dist, connected_supply, G_restored, Cost, reachable_nodes)
 
-
-        phi_sa = funcs2.constructfeatures(first_state, action, phi_sa,
-                                          G2, new_node, ActionList, period,
-                                          resource_usage, satisfied_demand, G_restored, total_debris, total_supply, EdgeList)
+        #####----------------------------- 9 -----------------------------------------------#########
+        ####### ------------- Information gain
+        # If the node reached is a NEW (not realized before) demand node - binary
+        if new_phi_check == 1:
+            if dem > 0:
+                # For now the mean distributions are the same
+                # But if demand nodes have diff dist then mean_dist is going to be the mean of each dist
+                phi_sa[(first_state.ID, action)].append(mean_dist)
+            else:
+                phi_sa[(first_state.ID, action)].append(0)
+        ###### -----------------------------------------------------------------------##################
 
         reachable_nodes = discovered_nodes
-
-
 
         #Calculate the reward to switch to the next state
         reward = funcs2.getReward(period, satisfied_demand)
@@ -276,7 +282,7 @@ for e in range(int(n_episodes)):
         id_counter, id_dict = new_state.getStateIndex(id_counter, id_dict)
 
         r_sas[first_state.ID][action][new_state.ID] = reward
-        if dem==0:
+        if dem==0: #dem checks if a new demand node is realized
             p_sas[first_state.ID][action][new_state.ID] = 1
         else:
             p_sas[first_state.ID][action][new_state.ID] = pk[dem-1]
@@ -290,7 +296,7 @@ for e in range(int(n_episodes)):
         if new_state.ID not in explored_states and sum(new_state.rem_demand)>0:
             explored_states.append(new_state.ID)
 
-        sas_vec.append(new_state.ID)
+        ############sas_vec.append(new_state.ID)
 
         #Update the Q values
        # alpha = 1.0/math.sqrt(e+1)
@@ -309,7 +315,7 @@ for e in range(int(n_episodes)):
 
     #obj_list.append(objective)
 
-    sas_dict[e]=sas_vec
+    ############sas_dict[e]=sas_vec
 
     # obj_list.append(Qmatrix.iloc[0].max())
     # obj_list1.append(Qmatrix.iloc[1].max())
@@ -364,9 +370,9 @@ for key, val in sas_dict.items():
 policy.to_csv('opt_policy_100kVI_INS2.csv', sep=',')
 
 #phi_sorted = sorted(phi_sa.items())
-df_basis= pd.DataFrame(data=phi_sa.values(),index=phi_sa.keys(),columns=['Action Betw','resource','satisfied demand',
-                                                                         'mean rem demand','actual rem demand','collected debris',
-                                                                         'satisfied demand','period', 'exponential period', 'degree'])
+df_basis= pd.DataFrame(data=phi_sa.values(),index=phi_sa.keys(),columns=['Intercept','SNEBC','resource','Rem. demand',
+                                                                         'Rem. Debris', 'Satisfied demand','Exp period before',
+                                                                          'Exp period after','IG_1'])
 df_basis.sort_index(inplace=True)
 
 # qsa = []
@@ -377,13 +383,13 @@ df_basis.sort_index(inplace=True)
 #
 # df_basis['qval']=qsa
 
-df_basis.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
+df_basis.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2_V2.csv', sep=',')
 
 
-Q_alphaMatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_alphamatrix_INS2.csv',sep=',')
-Qmatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_matrix_INS2.csv',sep=',')
+Q_alphaMatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_alphamatrix_INS2_V2.csv',sep=',')
+Qmatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_matrix_INS2_V2.csv',sep=',')
 
-with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/state_info_100kVI_INS2.csv', 'wb') as myfile2:
+with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/state_info_100kVI_INS2_V2.csv', 'wb') as myfile2:
     b = csv.writer(myfile2)
     for key,val in sorted(state_dict.items()):
     #for key, val in policy.items():
@@ -409,7 +415,7 @@ for s, v1 in p_sas.items():
 
 df_pr.set_index(['s','a'], inplace=True)
 
-df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS2.csv', sep=',')
+df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS2_V2.csv', sep=',')
 
 
 print ( "The end")
