@@ -67,30 +67,10 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     try:
         betw_centrality_service[first_state.ID]
     except:
-        G_collapsed = nx.condensation(G_restored.to_directed())
-        demand_collapsed , supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, first_state.rem_demand, first_state.rem_supply, G2)
-
-        betw_nodes_service = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
-        dem_binary = np.ones(len(demand_collapsed))
-        sup_binary = np.ones(len(demand_collapsed))
-        betw_nodes_debris_allpairs = SNEBC.generic_BC(G_collapsed, dem_binary, sup_binary, weight='debris', hops='debris')
-        betw_nodes_regular_allpairs = SNEBC.generic_BC(G_collapsed,  dem_binary, sup_binary,weight='debris', hops='links')
-        betw_nodes_regular_sp = SNEBC.generic_BC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris', hops='links')
-
-        betw_nodes_uncollapsed_service = SNEBC.uncollapse(betw_nodes_service, G_collapsed)
-        betw_nodes_uncollapsed_regular = SNEBC.uncollapse(betw_nodes_regular_allpairs, G_collapsed)
-        betw_nodes_uncollapsed_debris = SNEBC.uncollapse(betw_nodes_debris_allpairs, G_collapsed)
-        betw_nodes_uncollapsed_regular_sp = SNEBC.uncollapse(betw_nodes_regular_sp, G_collapsed)
-
-        betw_edges_service = SNEBC.convert2edge(betw_nodes_uncollapsed_service, EdgeList)
-        betw_edges_regular = SNEBC.convert2edge(betw_nodes_uncollapsed_regular, EdgeList)
-        betw_edges_debris = SNEBC.convert2edge(betw_nodes_uncollapsed_debris, EdgeList)
-        betw_edges_regular_sp = SNEBC.convert2edge(betw_nodes_uncollapsed_regular_sp, EdgeList)
-
-        betw_centrality_service[first_state.ID] = betw_edges_service
-        betw_centrality_regular[first_state.ID] = betw_edges_regular
-        betw_centrality_debris[first_state.ID] = betw_edges_debris
-        betw_centrality_regular_sp[first_state.ID] = betw_edges_regular_sp
+        betw_centrality_service, betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp = SNEBC.BC_calcs(
+            G_restored, first_state, G2,
+            EdgeList, betw_centrality_service, betw_centrality_regular, betw_centrality_debris,
+            betw_centrality_regular_sp)
 
     ######### Realize the new state and get its information #########
     #################################################################
@@ -113,7 +93,7 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
 
     first_state.cum_resource = first_state.cum_resource + resource_usage
 
-    period_before = period
+    period_before = funcs2.getPeriod(first_state.cum_resource, 0)
     #Update the planning horizon and resource amounts
     period = funcs2.getPeriod(first_state.cum_resource, resource)
 
@@ -132,9 +112,9 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
             # For now the mean distributions are the same
             # But if demand nodes have diff dist then mean_dist is going to be the mean of each dist
             mean_dist = 3
-            phi_sa[(new_state.ID, action)].append(mean_dist)
+            phi_sa[(first_state.ID, action)].append(mean_dist)
         else:
-            phi_sa[(new_state.ID, action)].append(0)
+            phi_sa[(first_state.ID, action)].append(0)
     ###### -----------------------------------------------------------------------##################
 
     reachable_nodes = discovered_nodes
@@ -149,11 +129,6 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     #Get its index
     id_counter, id_dict = new_state.getStateIndex(id_counter, id_dict)
 
-    # r_sas[first_state.ID][action][new_state.ID] = reward
-    # if dem==0:
-    #     p_sas[first_state.ID][action][new_state.ID] = 1
-    # else:
-    #     p_sas[first_state.ID][action][new_state.ID] = pk[dem-1]
     state_dict[(new_state.ID, 'demand')] = copy(new_state.rem_demand)
     state_dict[(new_state.ID, 'debris')] = copy(new_state.rem_debris)
     state_dict[(new_state.ID, 'supply')] = copy(new_state.rem_supply)
@@ -163,19 +138,12 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     if new_state.ID not in explored_states and sum(new_state.rem_demand)>0:
         explored_states.append(new_state.ID)
 
-    #Qmatrix = funcs2.updateQ(Qmatrix, Q_alphaMatrix, action, first_state, new_state, reward, n_episodes,alpha)
-
-
-    #Q_sa = reward + Qmatrix.iloc[second_state.ID].max()
-
-    #construct features for the new_state so that you can calculate the predicted Q_values
-
     return phi_sa, action,id_counter, new_state, reward, period, actions, betw_centrality_service,  \
-           betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp
+           betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp, reachable_nodes
 
 
 def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, EdgeList, G2, total_debris, actions, betw_centrality_service, total_supply,
-                    betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp ):
+                    betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp, reachable_nodes ):
 
     BasisMatrix = []
     done_actions = [i for i, val in enumerate(new_state.rem_debris) if val ==0] #Not cleared roads
@@ -189,48 +157,38 @@ def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, Edg
             try:
                 betw_centrality_service[new_state.ID]
             except:
-                G_collapsed = nx.condensation(G_restored.to_directed())
-                demand_collapsed, supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, new_state.rem_demand,
-                                                                                         new_state.rem_supply, G2)
-                betw_nodes_service = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
-                dem_binary = np.ones(len(demand_collapsed))
-                sup_binary = np.ones(len(demand_collapsed))
-                betw_nodes_debris= SNEBC.generic_BC(G_collapsed, dem_binary, sup_binary, weight='debris', hops='debris')
-                betw_nodes_regular = SNEBC.generic_BC(G_collapsed, dem_binary, sup_binary, weight='debris',hops='links')
-                betw_nodes_regular_sp= SNEBC.generic_BC(G_collapsed, demand_collapsed, supply_collapsed,weight='debris', hops='links')
-
-                betw_nodes_uncollapsed_service = SNEBC.uncollapse(betw_nodes_service, G_collapsed)
-                betw_nodes_uncollapsed_regular = SNEBC.uncollapse(betw_nodes_regular, G_collapsed)
-                betw_nodes_uncollapsed_debris = SNEBC.uncollapse(betw_nodes_debris, G_collapsed)
-                betw_nodes_uncollapsed_regular_sp = SNEBC.uncollapse(betw_nodes_regular_sp, G_collapsed)
-
-                betw_edges_service = SNEBC.convert2edge(betw_nodes_uncollapsed_service, EdgeList)
-                betw_edges_regular = SNEBC.convert2edge(betw_nodes_uncollapsed_regular, EdgeList)
-                betw_edges_debris = SNEBC.convert2edge(betw_nodes_uncollapsed_debris, EdgeList)
-                betw_edges_regular_sp = SNEBC.convert2edge(betw_nodes_uncollapsed_regular_sp, EdgeList)
-
-                betw_centrality_service[new_state.ID]= betw_edges_service
-                betw_centrality_regular[new_state.ID] = betw_edges_regular
-                betw_centrality_debris[new_state.ID] = betw_edges_debris
-                betw_centrality_regular_sp[new_state.ID] = betw_edges_regular_sp
+                betw_centrality_service, betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp = SNEBC.BC_calcs(
+                    G_restored, new_state, G2,
+                    EdgeList, betw_centrality_service, betw_centrality_regular, betw_centrality_debris,
+                    betw_centrality_regular_sp)
 
             resource_usage = new_state.rem_debris[action]
             period = funcs2.getPeriod(cum_resource, resource_usage)
             period_before = funcs2.getPeriod(cum_resource, 0)
+
+            # Find the new_node the action leads to
+            ed = [edge for edge, edge_id in ActionList.items() if edge_id == action][0]
+            for node in reachable_nodes:
+                for n in range(2):
+                    if node == ed[n]:
+                        new_node = ed[abs(1 - n)]
 
             phi_sa, new_phi_check = funcs2.constructfeatures(new_state, action, phi_sa, ActionList, period,
                                               resource_usage, total_debris, betw_centrality_service[new_state.ID], period_before, total_supply,
                                                              betw_centrality_regular[new_state.ID],betw_centrality_debris[new_state.ID], betw_centrality_regular_sp[new_state.ID])
 
             ###### ---------------------- 12 --------------------------####
-            if new_phi_check == 1:
-                if dem > 0:
-                    # For now the mean distributions are the same
-                    # But if demand nodes have diff dist then mean_dist is going to be the mean of each dist
+
+            if (new_state.rem_demand[new_node] != 0) & (new_node not in reachable_nodes):  # new_node is a demand node and not discovered before
+                dem = 1
+                if new_phi_check ==1:
                     mean_dist = 3
                     phi_sa[(new_state.ID, action)].append(mean_dist)
-                else:
+            else:
+                dem = 0
+                if new_phi_check == 1:
                     phi_sa[(new_state.ID, action)].append(0)
+
             ###### -----------------------------------------------------------------------##################
 
         BasisMatrix.append(np.asarray(phi_sa[(new_state.ID, action)]))

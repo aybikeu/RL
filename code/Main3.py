@@ -26,7 +26,7 @@ objdict = {}
 #For the initial small-sized instance
 
 #G = nx.read_edgelist('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_1.csv',delimiter=',',  nodetype=int, data=(('debris',float),))
-G = nx.read_edgelist('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_test.csv',delimiter=',',  nodetype=int, data=(('debris',float),))
+G = nx.read_edgelist('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_1.csv',delimiter=',',  nodetype=int, data=(('debris',float),))
 EdgeList = G.edges()
 ActionList = dict(zip(EdgeList, range(len(EdgeList))))
 
@@ -34,7 +34,7 @@ a = list(G.edges.data('debris'))
 initial_debris = list(zip(*a)[2])
 
 #df_node_data = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_1_sd.csv', header=None)
-df_node_data = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_test_sd.csv', header=None)
+df_node_data = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_1_sd.csv', header=None)
 
 initial_supply = df_node_data[0].tolist() # for all nodes
 demand_indicator= df_node_data[1].tolist() # for all nodes
@@ -61,7 +61,7 @@ n_actions = n_edges #All the edges blocked with debris are the possible actions
 n_nodes = len(initial_supply)
 
 #Parameters
-n_episodes = 100000
+n_episodes = 300000
 state_dict = {}
 
 #Parameters to set the id's of states
@@ -241,7 +241,7 @@ df_basis= pd.DataFrame(data=phi_sa.values(),index=phi_sa.keys(),columns=['Interc
 df_basis.sort_index(inplace=True)
 
 
-df_basis.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS3.csv', sep=',')
+df_basis.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS4.csv', sep=',')
 
 
 
@@ -253,14 +253,17 @@ for s, v1 in p_sas.items():
             df_pr = df_pr.append(x)
 
 df_pr.set_index(['s','a'], inplace=True)
-df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS3.csv', sep=',')
+df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS4.csv', sep=',')
 
 ###################################### SECOND PART FINDING THE OPTIMAL Q_VALUES ###########################
+df_pr = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS4.csv', sep=',')
+
 epsilon = 0.1
 convergence_check=False
 
 #n_states is 862 for Instance 2 - 1053 for instance 1
-n_states = df_pr['s_prime'].sort_values(ascending=False).values[0] + 1
+n_states = int(df_pr['s_prime'].sort_values(ascending=False).values[0] + 1)
+n_actions = 17
 
 n_sas = df_pr.shape[0] #number of all (s, a, s_prime)
 
@@ -293,4 +296,4 @@ for _ in range(20):
 if Q_diff.sum().sum() <= epsilon * 3000:
     convergence_check = True
 
-Q_Tnext.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS3.csv',sep=',')
+Q_Tnext.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS4.csv',sep=',')

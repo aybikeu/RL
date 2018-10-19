@@ -124,12 +124,14 @@ for iteration_no in range(10000):
 
     state, actions, Schedule, reachable_nodes = sim.buildEnvironment(explored_states, state_dict, G, G2, G_restored, ActionList, supply_nodes)
 
-    phi_sa, action, id_counter, new_state, reward, period, actions, betw_centrality_service, betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp  = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_restored, G2, G, EdgeList, reachable_nodes,
+    phi_sa, action, id_counter, new_state, reward, period, actions, betw_centrality_service, \
+    betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp, reachable_nodes  = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_restored, G2, G, EdgeList, reachable_nodes,
                                                                                ActionList, dist, phi_sa, total_debris, total_supply, explored_states,
                                                                                state_dict, id_dict, id_counter, betw_centrality_service, betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp )
 
-    phi_sa, action_order, Basis, betw_centrality_service,  betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp = sim.new_state_basis(new_state,phi_sa, ActionList, state.cum_resource, G_restored, EdgeList, G2, total_debris, actions,
-                                                                       betw_centrality_service,total_supply, betw_centrality_regular, betw_centrality_debris,betw_centrality_regular_sp)
+    phi_sa, action_order, Basis, betw_centrality_service, \
+    betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp = sim.new_state_basis(new_state,phi_sa, ActionList, state.cum_resource, G_restored, EdgeList, G2, total_debris, actions,
+                                                                       betw_centrality_service,total_supply, betw_centrality_regular, betw_centrality_debris,betw_centrality_regular_sp, reachable_nodes)
 
     Q_pred_new_state = np.dot(Basis,theta)
     max_q = max(Q_pred_new_state)

@@ -12,12 +12,12 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 from sklearn import preprocessing
 
 
-df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS1_V2.csv', sep=',')
+df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS3.csv', sep=',')
 #df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
 #df = pd.read_csv('basis.csv', sep=',')
 df.set_index('Unnamed: 0', inplace=True)
 
-df_q = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS1_V2.csv',sep=',')
+df_q = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS3.csv',sep=',')
 #df_q = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS2.csv',sep=',')
 df_q.set_index('Unnamed: 0', inplace=True)
 
@@ -39,7 +39,7 @@ for i, row in df.iterrows():
 
 #features = [0,1,2,5]
 #features = ['actual rem demand','satisfied demand','collected debris', 'resource']
-features = [3,7,8,1,4]
+features = [3,7,10]
 
 # plt.scatter(df['collected debris'], q_column['q_val'])
 # plt.show()
@@ -50,7 +50,7 @@ y = q_column['q_val']
 
 df_xy = df.copy()
 df_xy['Qval'] = y
-df_xy.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/xNy_INS1_V2.csv')
+df_xy.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/xNy_INS3.csv')
 
 
 # vif = pd.DataFrame()
