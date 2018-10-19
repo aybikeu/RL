@@ -16,97 +16,52 @@ from collections import defaultdict
 from nested_dict import nested_dict
 import functools
 
-### INSTANCE 1
+
+
 
 random.seed(42)
 
 objdict = {}
 
-#T_values = [1, 5, 10, 20]
-#T_values = [1000,300,100]
-T_values=[100,300,1000]
-#for temp in T_values:
 #For the initial small-sized instance
-EdgeList = [(0,1), (0,2), (1,2), (1,3),
-            (2,3), (2,4), (3,4)]
 
-EdgeListWeighted = [(0,1,1), (0,2,3), (1,2,3), (1,3,2),
-            (2,3,1), (2,4,3), (3,4,1)]
-
-
+#G = nx.read_edgelist('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_1.csv',delimiter=',',  nodetype=int, data=(('debris',float),))
+G = nx.read_edgelist('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_test.csv',delimiter=',',  nodetype=int, data=(('debris',float),))
+EdgeList = G.edges()
 ActionList = dict(zip(EdgeList, range(len(EdgeList))))
 
-G = nx.Graph()
-G.add_weighted_edges_from(EdgeListWeighted,weight='debris')
+a = list(G.edges.data('debris'))
+initial_debris = list(zip(*a)[2])
 
-initial_debris = [1,3,3,2,1,3,1] #for all edges
-initial_supply = [5,0,0,0,5] # for all nodes
-demand_indicator= [0,0,1,1,0] # for all nodes
+#df_node_data = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_1_sd.csv', header=None)
+df_node_data = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/GridNetwork_test_sd.csv', header=None)
+
+initial_supply = df_node_data[0].tolist() # for all nodes
+demand_indicator= df_node_data[1].tolist() # for all nodes
 
 total_debris = sum(initial_debris)
 total_supply = sum(initial_supply)
-
-#This graph is going to be modified with each action
-G2 = nx.Graph()
-G2.add_weighted_edges_from(EdgeListWeighted, weight='debris')
 
 # Define the demand distribution - the same for all demand points
 max_demand = 5
 xk = np.arange(1, max_demand+1)
 pk = [0.1 , 0.2 , 0.4, 0.2, 0.1]
-
-
-#pk = [0.8, 0.05 , 0.05, 0.09, 0.01]
 dist = stats.rv_discrete(name='dist', values=(xk, pk))
-
 mean_dist = dist.mean()
 
 #Integer demand values - simply rounded DOWN
 initial_demand = map(lambda x: (x*mean_dist).round(0), demand_indicator) #For now equate the rem_demand of demand nodes to their exp value
-actionSpace = [] #For the initial action space
 supply_nodes = [i for i,p in enumerate(initial_supply) if p>0]
 
-resource = 5
+resource = 1 #for the second instance
+#resource = 5
+
 n_edges = len(initial_debris)
 n_actions = n_edges #All the edges blocked with debris are the possible actions
 n_nodes = len(initial_supply)
 
-# Figure out how many different combinations for states
-n_debriscomb = 2**n_edges
-n_supplycomb = reduce((lambda x,y: x*y), [j+1 for j in initial_supply])
-#n_demandcomb = 2**(len([i for i in demand_indicator if i >0]))
-n_demandcomb = reduce((lambda x,y: x*y), [j+1 for j in map(lambda x: x*max_demand, demand_indicator)])
-
-n_states = n_debriscomb * n_supplycomb * n_demandcomb
-
-#Initialize all Q(s,a) values to 0
-Qmatrix = pd.DataFrame(data=0,
-                       index=range(n_states),
-                       columns=range(n_actions),
-                       dtype=float)
-
-
 #Parameters
-gamma = 1 # We don't define a discount value
-#n_episodes = 1E3 # A big number
 n_episodes = 100000
-epsilon = 0.3
-temp = 10 # if greedy is chosen, dummy value assigned to temp
-T = temp #Temperature parameter of boltzmann
-alpha = 1
-
-#To decrease alpha value based on the number of times s,a pair is visited
-Q_alphaMatrix = pd.DataFrame(data=0,
-                       index=range(n_states),
-                       columns=range(n_actions),
-                       dtype=float)
-
-# State Action State
-sas_dict = {}
-#rule = 'greedy' #Indicates the action selection rule
-#rule = 'boltzmann'
-rule = 'glie'
-
 state_dict = {}
 
 #Parameters to set the id's of states
@@ -116,19 +71,11 @@ id_counter = 0
 r_sas = nested_dict()
 p_sas = nested_dict()
 
-complete_schedule={}
- #Just a list to keep track of the selected actions
-
-#Keep track of the objective
-obj_list=[]
-obj_list1=[]
-obj_list2=[]
-obj_list3=[]
-obj_list4=[]
-obj_list33=[]
-
 phi_sa = {}
-betw_centrality = {}
+betw_centrality_service = {}
+betw_centrality_regular = {}
+betw_centrality_debris = {}
+betw_centrality_regular_sp = {}
 
 explored_states = []
 
@@ -144,14 +91,14 @@ id_counter, id_dict = initial_state.getStateIndex(id_counter, id_dict)
 actions = funcs2.initializeActionSpace(supply_nodes, G, ActionList)
 explored_states.append(initial_state.ID)
 
+
 for e in range(int(n_episodes)):
 
 
-    #alpha = log(e+1)/(e+1)
-
     # Initialize the environment
     #remaining_demand = True
-    Schedule = []
+    Schedule = [] #Initialization - these roads are as if they are cleared before
+
     reachable_nodes = set(supply_nodes)
     rem_resource = resource
     period = 1
@@ -164,16 +111,11 @@ for e in range(int(n_episodes)):
 
     sas_vec = []
 
-    G2 = nx.Graph()
-    G2.add_weighted_edges_from(EdgeListWeighted, weight='debris')
+    G2 = G.copy()
 
     #Initialize the state and the action space
-    # first_state = st.State(initial_debris, initial_supply, initial_demand, total_resource_usage, None)
-    # id_counter, id_dict = first_state.getStateIndex(id_counter, id_dict)
-
     #Set up the initial status of the environment
     first_state_id = random.choice(explored_states)
-    #first_state_id = 0
     remaining_demand = sum(state_dict[(first_state_id, 'demand')])>0
     first_state = st.State(state_dict[(first_state_id, 'debris')], state_dict[(first_state_id, 'supply')], state_dict[(first_state_id, 'demand')],
                            state_dict[(first_state_id, 'resource')], first_state_id)
@@ -184,7 +126,7 @@ for e in range(int(n_episodes)):
 
 
     #G2 is the original graph whereas G_disrupted is the graph to be constructed with the cleared roads
-    for cr in cleared_roads:
+    for cr in Schedule:
         ed = [edge for edge, edge_id in ActionList.items() if edge_id == cr][0]
         G2[ed[0]][ed[1]]['debris'] = 0
         G_restored.add_edge(ed[0], ed[1])
@@ -199,23 +141,17 @@ for e in range(int(n_episodes)):
     while remaining_demand:
 
         #Choose action
-        action = first_state.choose_action(epsilon, Qmatrix, actions, Schedule, rule, T, Q_alphaMatrix, e)
-
+        eligible_actions = actions - set(Schedule)
+        action = random.choice(list(eligible_actions))
         Schedule.append(action)
-        #########sas_vec.append(action)
 
         ## Vertex collapse - condense the network
         #For large sized instances calculating sp can be hard
         try:
-            betw_centrality[first_state.ID]
+            betw_centrality_service[first_state.ID]
         except:
-            G_collapsed = nx.condensation(G_restored.to_directed())
-            demand_collapsed , supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, first_state.rem_demand, first_state.rem_supply, G2)
-
-            betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
-            betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
-            betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
-            betw_centrality[first_state.ID] = betw_edges  # betw cenrality for all the actions(edges) in each state
+            betw_centrality_service, betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp = SNEBC.BC_calcs(G_restored, first_state, G2,
+                                                        EdgeList, betw_centrality_service, betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp)
 
         ######### Realize the new state and get its information #########
         #################################################################
@@ -232,8 +168,6 @@ for e in range(int(n_episodes)):
         if len(connected_supply) > 1:
             first_state.transferSupply(connected_supply)
 
-
-
         #Get the resource usage and update remaining debris amounts
         new_rem_debris, resource_usage = first_state.updateDebris(action)
 
@@ -246,12 +180,13 @@ for e in range(int(n_episodes)):
         #Construct features
         #Before realizing demand so that you can omit the effect of the action taken & realization
         phi_sa, new_phi_check = funcs2.constructfeatures(first_state, action, phi_sa, ActionList, period,
-                                          resource_usage, total_debris, betw_centrality[first_state.ID], period_before, total_supply)
+                                          resource_usage, total_debris, betw_centrality_service[first_state.ID], period_before, total_supply,
+                                                         betw_centrality_regular[first_state.ID], betw_centrality_debris[first_state.ID], betw_centrality_regular_sp[first_state.ID])
 
         # Realize demand then allocate supply immediately
         new_rem_demand, new_rem_supply, satisfied_demand, dem = first_state.realizeDemand(new_node, dist, connected_supply, G_restored, Cost, reachable_nodes)
 
-        #####----------------------------- 9 -----------------------------------------------#########
+        #####----------------------------- 12 -----------------------------------------------#########
         ####### ------------- Information gain
         # If the node reached is a NEW (not realized before) demand node - binary
         if new_phi_check == 1:
@@ -291,16 +226,7 @@ for e in range(int(n_episodes)):
         if new_state.ID not in explored_states and sum(new_state.rem_demand)>0:
             explored_states.append(new_state.ID)
 
-        ############sas_vec.append(new_state.ID)
-
-        #Update the Q values
-       # alpha = 1.0/math.sqrt(e+1)
-        #alpha = 1.0/((e+1)**(0.51))
-        #alpha=1.0/(e+1)
-        Qmatrix = funcs2.updateQ(Qmatrix, Q_alphaMatrix, action, first_state, new_state, reward, n_episodes,alpha)
-
-        #For each episode check the action sequence - for output analysis
-        complete_schedule[e] = Schedule
+        #Qmatrix = funcs2.updateQ(Qmatrix, Q_alphaMatrix, action, first_state, new_state, reward, n_episodes,alpha)
 
         #Check termination
         if sum(new_rem_demand)==0: #All the demand is satisfied
@@ -308,98 +234,16 @@ for e in range(int(n_episodes)):
         else:
             first_state = new_state
 
-    #obj_list.append(objective)
 
-    ############sas_dict[e]=sas_vec
-
-    # obj_list.append(Qmatrix.iloc[0].max())
-    # obj_list1.append(Qmatrix.iloc[1].max())
-    # obj_list2.append(Qmatrix.iloc[2].max())
-    # obj_list3.append(Qmatrix.iloc[3].max())
-    # obj_list4.append(Qmatrix.iloc[4].max())
-    # obj_list33.append(Qmatrix.iloc[33].max())
-
-
-    #Decrase the epsilon
-    #epsilon -= (1.0/n_episodes)
-    #alpha -= (1.0 / n_episodes)
-    #T -= (T/n_episodes)
-
-#objdict[temp] = obj_list
-#obj_list=[]
-
-#Get the best action for each state
-#The state number prev calculated is just an UB on the actual state number
-#there can't be anymore states than the ones calculated
-# valid_state_num = len(state_dict)/4
-# policy = funcs2.extractPolicy(Qmatrix, valid_state_num)
-
-#y = objdict[1000]
-# x = range(len(obj_list))
-# #y=objdict[1000]
-# y=obj_list
-# #plt.plot(x,y, label='T=1000')
-# plt.plot(x,y, label='state 0')
-# #plt.legend('T=1000')
-# xlabel('# of episodes')
-# ylabel('Objective value')
-# plt.plot(x,objdict[300],label='T=300')
-# plt.plot(x,objdict[100],label='T=100')
-
-
-# plt.plot(x,objdict[20])
-# plt.plot(x,obj_list1, label='state 1')
-# plt.plot(x,obj_list4, label='state 4')
-# plt.plot(x,obj_list, label='state 2')
-# plt.plot(x,obj_list3, label='state 3')
-# plt.plot(x,obj_list33, label='state 33')
-# plt.legend()
-# grid(True)
-# show()
-
-# counter=0
-# for key, val in sas_dict.items():
-#     if val[1]==6:
-#         counter+=1
-
-#policy.to_csv('opt_policy_100kVI_INS2.csv', sep=',')
-
-#phi_sorted = sorted(phi_sa.items())
 df_basis= pd.DataFrame(data=phi_sa.values(),index=phi_sa.keys(),columns=['Intercept','SNEBC','resource','Rem. demand',
                                                                          'Rem. Debris', 'Satisfied demand','Exp period before',
-                                                                          'Exp period after','IG_1'])
+                                                                          'Exp period after','BC_debris','BC_regular','BC_regular_sp','IG_1'])
 df_basis.sort_index(inplace=True)
 
-# qsa = []
-# for ind in df_basis.index:
-#     ss = ind[0]
-#     aa = ind[1]
-#     qsa.append(Qmatrix.iloc[ss,aa])
-#
-# df_basis['qval']=qsa
 
-df_basis.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS1_V2.csv', sep=',')
+df_basis.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS3.csv', sep=',')
 
 
-Q_alphaMatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_alphamatrix_INS1_V2.csv',sep=',')
-Qmatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_matrix_INS1_V2.csv',sep=',')
-
-with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/state_info_100kVI_INS1_V2.csv', 'wb') as myfile2:
-    b = csv.writer(myfile2)
-    for key,val in sorted(state_dict.items()):
-    #for key, val in policy.items():
-        b.writerow([key,val])
-# #
-# with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/policy_100k_VIR2.csv', 'wb') as myfile1:
-#     b = csv.writer(myfile1)
-#     for key,val in sas_dict.items():
-#     #for key, val in policy.items():
-#         b.writerow([key,val])
-#
-# with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/obj_list_1mrandomstoc_INS2.csv', 'wb') as myfile:
-#     a = csv.writer(myfile,delimiter=',')
-#     data = y
-#     a.writerow(y)
 
 df_pr=pd.DataFrame(columns=('probability','reward','s','a','s_prime'),dtype=float)
 for s, v1 in p_sas.items():
@@ -409,8 +253,44 @@ for s, v1 in p_sas.items():
             df_pr = df_pr.append(x)
 
 df_pr.set_index(['s','a'], inplace=True)
+df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS3.csv', sep=',')
 
-df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS1_V2.csv', sep=',')
+###################################### SECOND PART FINDING THE OPTIMAL Q_VALUES ###########################
+epsilon = 0.1
+convergence_check=False
 
+#n_states is 862 for Instance 2 - 1053 for instance 1
+n_states = df_pr['s_prime'].sort_values(ascending=False).values[0] + 1
 
-print ( "The end")
+n_sas = df_pr.shape[0] #number of all (s, a, s_prime)
+
+Q_T = pd.DataFrame(data=0,
+                       index=range(n_states),
+                       columns=range(n_actions),
+                       dtype=float)
+Q_Tnext = pd.DataFrame(data=0,
+                       index=range(n_states),
+                       columns=range(n_actions),
+                       dtype=float)
+
+#while convergence_check==False:
+for _ in range(20):
+    for s in range(n_states):
+        for a in range(n_actions):
+            df_slice = df_pr.query('s== {} & a=={}'.format(s,a))
+            added_value = 0
+            for _, r in df_slice.iterrows():
+                    s_p = int(r['s_prime'])
+                    reward = r['reward']
+                    pr = r['probability']
+                    added_value = added_value + (pr * (reward + Q_T.iloc[s_p].max()))
+
+            Q_Tnext.iloc[s][a] = added_value
+
+    Q_diff = Q_Tnext - Q_T
+    Q_T = Q_Tnext.copy()
+
+if Q_diff.sum().sum() <= epsilon * 3000:
+    convergence_check = True
+
+Q_Tnext.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS3.csv',sep=',')

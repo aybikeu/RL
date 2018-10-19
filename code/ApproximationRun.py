@@ -39,7 +39,7 @@ for i, row in df.iterrows():
 
 #features = [0,1,2,5]
 #features = ['actual rem demand','satisfied demand','collected debris', 'resource']
-features = [3,5]
+features = [3,7,8,1,4]
 
 # plt.scatter(df['collected debris'], q_column['q_val'])
 # plt.show()
@@ -50,12 +50,12 @@ y = q_column['q_val']
 
 df_xy = df.copy()
 df_xy['Qval'] = y
-df_xy.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/xNy_INS2_V2.csv')
+df_xy.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/xNy_INS1_V2.csv')
 
 
-vif = pd.DataFrame()
-vif["VIF Factor"] = [variance_inflation_factor(x.values, i) for i in range(x.shape[1])]
-vif["features"] = x.columns
+# vif = pd.DataFrame()
+# vif["VIF Factor"] = [variance_inflation_factor(x.values, i) for i in range(x.shape[1])]
+# vif["features"] = x.columns
 
 x = preprocessing.scale(x)
 x = pd.DataFrame(x)

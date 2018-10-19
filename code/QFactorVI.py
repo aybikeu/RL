@@ -2,12 +2,12 @@ import pandas as pd
 
 
 
-df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS1_V2.csv')
+df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS2_V3.csv')
 epsilon = 0.1
 convergence_check=False
 
 #n_states is 862 for Instance 2 - 1053 for instance 1
-n_states = 1053
+n_states = 866
 
 n_actions=7
 n_sas = df.shape[0] #number of all (s, a, s_prime)
@@ -41,7 +41,7 @@ for _ in range(20):
 if Q_diff.sum().sum() <= epsilon * 3000:
     convergence_check = True
 
-Q_Tnext.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS1_V2.csv',sep=',')
+Q_Tnext.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS2_V3.csv',sep=',')
 
 
 

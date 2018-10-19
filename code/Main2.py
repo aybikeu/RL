@@ -133,7 +133,10 @@ obj_list4=[]
 obj_list33=[]
 
 phi_sa = {}
-betw_centrality = {}
+betw_centrality_service = {}
+betw_centrality_regular = {}
+betw_centrality_debris = {}
+betw_centrality_regular_sp = {}
 
 explored_states = []
 
@@ -212,15 +215,37 @@ for e in range(int(n_episodes)):
         ## Vertex collapse - condense the network
         #For large sized instances calculating sp can be hard
         try:
-            betw_centrality[first_state.ID]
+            betw_centrality_service[first_state.ID]
         except:
             G_collapsed = nx.condensation(G_restored.to_directed())
-            demand_collapsed , supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed, first_state.rem_demand, first_state.rem_supply, G2)
+            demand_collapsed, supply_collapsed, G_collapsed = funcs2.fixcondensation(G_collapsed,
+                                                                                     first_state.rem_demand,
+                                                                                     first_state.rem_supply, G2)
 
-            betw_nodes = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
-            betw_nodes_uncollapsed = SNEBC.uncollapse(betw_nodes, G_collapsed)
-            betw_edges = SNEBC.convert2edge(betw_nodes_uncollapsed, EdgeList)
-            betw_centrality[first_state.ID] = betw_edges  # betw cenrality for all the actions(edges) in each state
+            betw_nodes_service = SNEBC.SNEBC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris')
+            dem_binary = np.ones(len(demand_collapsed))
+            sup_binary = np.ones(len(demand_collapsed))
+            betw_nodes_debris_allpairs = SNEBC.generic_BC(G_collapsed, dem_binary, sup_binary, weight='debris',
+                                                          hops='debris')
+            betw_nodes_regular_allpairs = SNEBC.generic_BC(G_collapsed, dem_binary, sup_binary, weight='debris',
+                                                           hops='links')
+            betw_nodes_regular_sp = SNEBC.generic_BC(G_collapsed, demand_collapsed, supply_collapsed, weight='debris',
+                                                     hops='links')
+
+            betw_nodes_uncollapsed_service = SNEBC.uncollapse(betw_nodes_service, G_collapsed)
+            betw_nodes_uncollapsed_regular = SNEBC.uncollapse(betw_nodes_regular_allpairs, G_collapsed)
+            betw_nodes_uncollapsed_debris = SNEBC.uncollapse(betw_nodes_debris_allpairs, G_collapsed)
+            betw_nodes_uncollapsed_regular_sp = SNEBC.uncollapse(betw_nodes_regular_sp, G_collapsed)
+
+            betw_edges_service = SNEBC.convert2edge(betw_nodes_uncollapsed_service, EdgeList)
+            betw_edges_regular = SNEBC.convert2edge(betw_nodes_uncollapsed_regular, EdgeList)
+            betw_edges_debris = SNEBC.convert2edge(betw_nodes_uncollapsed_debris, EdgeList)
+            betw_edges_regular_sp = SNEBC.convert2edge(betw_nodes_uncollapsed_regular_sp, EdgeList)
+
+            betw_centrality_service[first_state.ID] = betw_edges_service
+            betw_centrality_regular[first_state.ID] = betw_edges_regular
+            betw_centrality_debris[first_state.ID] = betw_edges_debris
+            betw_centrality_regular_sp[first_state.ID] = betw_edges_regular_sp
 
         ######### Realize the new state and get its information #########
         #################################################################
@@ -251,12 +276,13 @@ for e in range(int(n_episodes)):
         #Construct features
         #Before realizing demand so that you can omit the effect of the action taken & realization
         phi_sa, new_phi_check = funcs2.constructfeatures(first_state, action, phi_sa, ActionList, period,
-                                          resource_usage, total_debris, betw_centrality[first_state.ID], period_before, total_supply)
+                                          resource_usage, total_debris, betw_centrality_service[first_state.ID], period_before, total_supply,
+                                                         betw_centrality_regular[first_state.ID], betw_centrality_debris[first_state.ID], betw_centrality_regular_sp[first_state.ID])
 
         # Realize demand then allocate supply immediately
         new_rem_demand, new_rem_supply, satisfied_demand, dem = first_state.realizeDemand(new_node, dist, connected_supply, G_restored, Cost, reachable_nodes)
 
-        #####----------------------------- 9 -----------------------------------------------#########
+        #####----------------------------- 12 -----------------------------------------------#########
         ####### ------------- Information gain
         # If the node reached is a NEW (not realized before) demand node - binary
         if new_phi_check == 1:
@@ -367,12 +393,12 @@ for key, val in sas_dict.items():
     if val[1]==6:
         counter+=1
 
-policy.to_csv('opt_policy_100kVI_INS2.csv', sep=',')
+policy.to_csv('opt_policy_100kVI_INS2_V3.csv', sep=',')
 
 #phi_sorted = sorted(phi_sa.items())
 df_basis= pd.DataFrame(data=phi_sa.values(),index=phi_sa.keys(),columns=['Intercept','SNEBC','resource','Rem. demand',
                                                                          'Rem. Debris', 'Satisfied demand','Exp period before',
-                                                                          'Exp period after','IG_1'])
+                                                                          'Exp period after','BC_debris','BC_regular','BC_regular_sp','IG_1'])
 df_basis.sort_index(inplace=True)
 
 # qsa = []
@@ -383,13 +409,13 @@ df_basis.sort_index(inplace=True)
 #
 # df_basis['qval']=qsa
 
-df_basis.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2_V2.csv', sep=',')
+df_basis.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2_V3.csv', sep=',')
 
 
-Q_alphaMatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_alphamatrix_INS2_V2.csv',sep=',')
-Qmatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_matrix_INS2_V2.csv',sep=',')
+Q_alphaMatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_alphamatrix_INS2_V3.csv',sep=',')
+Qmatrix.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_matrix_INS2_V3.csv',sep=',')
 
-with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/state_info_100kVI_INS2_V2.csv', 'wb') as myfile2:
+with open('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/state_info_100kVI_INS2_V3.csv', 'wb') as myfile2:
     b = csv.writer(myfile2)
     for key,val in sorted(state_dict.items()):
     #for key, val in policy.items():
@@ -415,7 +441,7 @@ for s, v1 in p_sas.items():
 
 df_pr.set_index(['s','a'], inplace=True)
 
-df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS2_V2.csv', sep=',')
+df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS2_V3.csv', sep=',')
 
 
 print ( "The end")

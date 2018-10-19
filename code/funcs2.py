@@ -213,7 +213,8 @@ def fixcondensation(G_collapsed, demand, supply, G2):
     return demandvec, supplyvec, G_collapsed
 
 def constructfeatures(first_state, action, phi_sa, ActionList, period,
-                      resource_usage,  total_debris,  betw_edges, period_before, total_supply ):
+                      resource_usage,  total_debris,  betw_edges_service, period_before, total_supply,
+                      betw_edges_regular, betw_edges_debris, betw_edges_regular_sp):
     try: # if the basis is already constructed, no need to do the same calculations again
         phi_sa[(first_state.ID, action)]
         new_phi_check = 0
@@ -222,21 +223,21 @@ def constructfeatures(first_state, action, phi_sa, ActionList, period,
         new_phi_check = 1
         phi_sa[(first_state.ID, action)] = []
 
-        ###--------------------------- 1 ----------------------------####
+        ###--------------------------- 0 ----------------------------####
         ### INTERCEPT
         phi_sa[(first_state.ID, action)].insert(0,1)
 
 
-        ###--------------------------- 2 ---------------------------###
+        ###--------------------------- 1 ---------------------------###
         # Add SNEBC measure for s,a pair
         act = [key for key, value in ActionList.items() if value == action][0]
-        phi_sa[(first_state.ID, action)].append(betw_edges[act])
+        phi_sa[(first_state.ID, action)].append(betw_edges_service[act])
 
-        ###--------------------------- 3 ---------------------------###
+        ###--------------------------- 2 ---------------------------###
         #amount of resource usage (debris amount) on the action(road)
         phi_sa[(first_state.ID, action)].append(resource_usage)
 
-        ###--------------------------- 4 ---------------------------### THIS IS A STATE PROPERTY THOUGH
+        ###--------------------------- 3 ---------------------------### THIS IS A STATE PROPERTY THOUGH
         # Even if the new reached node is not a demand point it can be connected to other demand
         # via unblocked roads - hence should be taken into account
         # The amount of satisfied demand is going to change - hence binary makes more sense
@@ -250,21 +251,31 @@ def constructfeatures(first_state, action, phi_sa, ActionList, period,
         phi_sa[(first_state.ID, action)].append(sum(first_state.rem_demand))  # Total actual (realized) remaining demand
         #phi_sa[(first_state.ID, action)].append(np.count_nonzero(np.asarray(first_state.rem_demand)) * 3)  # total expected rem_demand
 
-        ###--------------------------- 5 ---------------------------###
+        ###--------------------------- 4 ---------------------------###
         debris_feature = total_debris - sum(first_state.rem_debris)  # This is the debris cleared until now
-        phi_sa[(first_state.ID, action)].append(debris_feature)  # Total cleared debris until now
+        phi_sa[(first_state.ID, action)].append(debris_feature)  # Total cleared debris until now - including the debris for action
 
-        ###--------------------------- 6 ---------------------------###
+        ###--------------------------- 5 ---------------------------###
 
         demand_feature = total_supply - sum(first_state.rem_supply)  # This is the total demand satisfied until now
         phi_sa[(first_state.ID, action)].append(demand_feature)  # Total satisfied demand until now
 
-        ###--------------------------- 7 ---------------------------###
+        ###--------------------------- 6 ---------------------------###
         phi_sa[(first_state.ID, action)].append(np.exp(-0.2 * period_before))
 
-        ### ----------------------------- 8 -------------------------####
+        ### ----------------------------- 7 -------------------------####
         phi_sa[(first_state.ID, action)].append(np.exp(-0.2 * period))
 
+        ### ---------------------------- 8 -------------------------- #####
+
+        phi_sa[(first_state.ID, action)].append(betw_edges_debris[act])
+        ### ---------------------------- 9 -------------------------- #####
+
+        phi_sa[(first_state.ID, action)].append(betw_edges_regular[act])
+
+        ### ---------------------------- 10 -------------------------- #####
+
+        phi_sa[(first_state.ID, action)].append(betw_edges_regular_sp[act])
 
     return phi_sa, new_phi_check
 
