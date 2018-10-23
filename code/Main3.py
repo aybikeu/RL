@@ -256,14 +256,14 @@ df_pr.set_index(['s','a'], inplace=True)
 df_pr.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS4.csv', sep=',')
 
 ###################################### SECOND PART FINDING THE OPTIMAL Q_VALUES ###########################
-df_pr = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS4.csv', sep=',')
+'''df_pr = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/pr_for_INS4.csv', sep=',')
 
 epsilon = 0.1
 convergence_check=False
 
 #n_states is 862 for Instance 2 - 1053 for instance 1
 n_states = int(df_pr['s_prime'].sort_values(ascending=False).values[0] + 1)
-n_actions = 17
+n_actions = 103
 
 n_sas = df_pr.shape[0] #number of all (s, a, s_prime)
 
@@ -296,4 +296,4 @@ for _ in range(20):
 if Q_diff.sum().sum() <= epsilon * 3000:
     convergence_check = True
 
-Q_Tnext.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS4.csv',sep=',')
+Q_Tnext.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS4.csv',sep=',')'''
