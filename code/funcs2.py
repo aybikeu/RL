@@ -7,6 +7,8 @@ import pandas as pd
 import math
 import SNEBC
 
+
+
 def initializeActionSpace (reachable_nodes, G, ActionList):
 
     actions = set()
@@ -279,14 +281,65 @@ def constructfeatures(first_state, action, phi_sa, ActionList, period,
 
     return phi_sa, new_phi_check
 
-def Qtarget(state_id, id_dict, action, q_column):
-    df = pd.read_csv('C:\Users\ulusan.a\Desktop\RL_rep\RL\data_files\state_mapper_INS2.csv', header=None)
-    df.columns=['hash','state_id']
 
+
+def Qtarget(state, id_dict, action, q_column, state_mapper, new_state, Qmatrix):
+    # df = pd.read_csv('C:\Users\ulusan.a\Desktop\RL_rep\RL\data_files\state_mapper_INS2_V2.csv', header=None)
+    # df.columns=['hash','state_id']
+
+    state_id = state.ID
     hash_id = [key for key, val in id_dict.items() if val == state_id][0]
-    df_hash = df.query('hash=={}'.format(hash_id))
-    corresp_id = int(df_hash['state_id'])
-    target = q_column.loc[str((corresp_id, action))]['q_val']
+    try:
+        # df_hash = df.query('hash=={}'.format(hash_id))
+        # corresp_id = int(df_hash['state_id'])
+        corresp_id = state_mapper[hash_id]
+        # if corresp_id != state_id:
+        #     print(corresp_id)
+        target = q_column.loc[str((corresp_id, action))]['q_optimal']
+        if math.isnan(target):
+            print('what is happening')
+    except:
+        try:
+            #Its not a new state but simply a new action corresponding to the new state - no value in q_column
+            corresp_id = state_mapper[hash_id]
+            target = Qmatrix.iloc[state.ID][action]
+            dum2 = pd.DataFrame({'q_optimal': target, 'q_pred': 0}, index=[str((corresp_id, action))])
+            q_column = q_column.append(dum2)
+            if math.isnan(target):
+                print('what is happening')
+        except:
+            print('An extra state has found:({})'.format(state.ID))
+            target = Qmatrix.iloc[state.ID][action]
+            state_mapper[hash_id] = max(state_mapper.values()) + 1 #Create a new state number
+            corresp_id = state_mapper[hash_id]
+            dum2 = pd.DataFrame({'q_optimal': target, 'q_pred': 0}, index=[str((corresp_id, action))])
+            q_column = q_column.append(dum2)
 
+            if math.isnan(target):
+                print('what is happening')
 
-    return target
+    return target, corresp_id, q_column
+
+def stateMapper():
+    state_info = pd.read_csv('C:\Users\ulusan.a\Desktop\RL_rep\RL\data_files\state_info_100kVI_INS2_V2.csv', header=None)
+    state_info.columns = ['state feature', 'value']
+    state_info['state'], state_info['feature'] = state_info['state feature'].str.split(',',1).str
+    state_info['state']=state_info['state'].str[1:].astype('int64')
+    state_info['feature']=state_info['feature'].str[1:-1]
+
+    state_mapper = {}
+
+    max_state = state_info['state'].max()
+    for state_index in range(max_state+1):
+        df_s = state_info.query('state =={}'.format(state_index))
+        #first change the str data type to float - make an float array to have accurate hashing
+        debris_hash = hash(tuple(np.fromstring(df_s.iloc[0]['value'][1:-1],dtype=float,sep=',')))
+        demand_hash = hash(tuple(np.fromstring(df_s.iloc[1]['value'][1:-1],dtype=float,sep=',')))
+        supply_hash =  hash(tuple(np.fromstring(df_s.iloc[4]['value'][1:-1],dtype=float,sep=',')))
+
+        state_hash = hash((debris_hash,supply_hash ,demand_hash ))
+        state_mapper[state_hash] = state_index
+
+    #df_map = pd.DataFrame.from_dict(state_mapper, orient='index')
+    #df_map.columns = ['hash','state_id']
+    return state_mapper

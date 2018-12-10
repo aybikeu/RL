@@ -1,11 +1,11 @@
 \* Supply Allocation *\
 Maximize
-OBJ: x_9_47
+OBJ: x_5_3
 Subject To
-_C1: x_9_47 <= 34
-_C2: x_9_47 <= 3
+_C1: x_5_3 <= 22
+_C2: x_5_3 <= 1
 Bounds
-0 <= x_9_47
+0 <= x_5_3
 Generals
-x_9_47
+x_5_3
 End

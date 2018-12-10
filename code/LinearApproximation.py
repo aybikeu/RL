@@ -14,7 +14,7 @@ import SNEBC
 import sampleSimulation as sim
 
 
-n_features = 5
+n_features = 11
 #Put the intercept as an extra feature
 theta = np.ones(n_features + 1)
 
@@ -99,10 +99,10 @@ explored_states.append(initial_state.ID)
 step_size = 0.1
 
 # Get the actual optimal calculated to see if GD is working
-df_q = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS2.csv', sep=',')
+df_q = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/Q_optimalVI_INS2_V2.csv', sep=',')
 df_q.set_index('Unnamed: 0', inplace=True)
 
-df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2.csv', sep=',')
+df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_100kVI_INS2_V2.csv', sep=',')
 df.set_index('Unnamed: 0', inplace=True)
 
 q_column = pd.DataFrame(index=df.index.copy(), columns=['q_val'])
@@ -111,9 +111,17 @@ for i, row in df.iterrows():
     st , act = i_str.split(',')
     q_column.loc[i]['q_val'] = df_q.iloc[int(st)][int(act)]
 
-q_column.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/q_columns_INS2.csv')
+q_column.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/q_columns_INS2_V2.csv')
 
-for iteration_no in range(10000):
+Q_predicted = pd.DataFrame(data = 0, index=df.index.copy(), columns=['q_predicted'])
+
+n_episodes = 100000
+step_size = 0.0001
+s = []
+# Create the hashing
+state_mapper = funcs2.stateMapper()
+
+for iteration_no in range(n_episodes):
 
 
     G_restored = nx.Graph()
@@ -124,6 +132,8 @@ for iteration_no in range(10000):
 
     state, actions, Schedule, reachable_nodes = sim.buildEnvironment(explored_states, state_dict, G, G2, G_restored, ActionList, supply_nodes)
 
+    state_copy = copy(state)
+
     phi_sa, action, id_counter, new_state, reward, period, actions, betw_centrality_service, \
     betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp, reachable_nodes  = sim.sample(state, actions, supply_nodes, resource, Qmatrix, Schedule, QalphaMatrix, G_restored, G2, G, EdgeList, reachable_nodes,
                                                                                ActionList, dist, phi_sa, total_debris, total_supply, explored_states,
@@ -131,7 +141,7 @@ for iteration_no in range(10000):
 
     phi_sa, action_order, Basis, betw_centrality_service, \
     betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp = sim.new_state_basis(new_state,phi_sa, ActionList, state.cum_resource, G_restored, EdgeList, G2, total_debris, actions,
-                                                                       betw_centrality_service,total_supply, betw_centrality_regular, betw_centrality_debris,betw_centrality_regular_sp, reachable_nodes)
+                                                                       betw_centrality_service,total_supply, betw_centrality_regular, betw_centrality_debris,betw_centrality_regular_sp, reachable_nodes, resource)
 
     Q_pred_new_state = np.dot(Basis,theta)
     max_q = max(Q_pred_new_state)
@@ -141,6 +151,7 @@ for iteration_no in range(10000):
     Qmatrix_previous = Qmatrix.copy() #Store Qmatrix's previous values
 
     Qmatrix.iloc[state.ID][action] = reward + max_q
+    QalphaMatrix.iloc[state.ID][action] += 1
 
     #basis_sa = basis.query('s== {} & a=={}'.format(state.ID, action))
     bas = np.asarray(phi_sa[(state.ID, action)])
@@ -148,14 +159,19 @@ for iteration_no in range(10000):
 
     #Qmatrix = funcs2.updatePredQ(Qmatrix, action, state, new_state, reward, theta, phi_sa)
 
-    #target = Qmatrix.iloc[state.ID][action]
-    #target = q_column.loc[str((state.ID, action))]['q_val'] #this is the optimal Q value calc from value iteration
-    target = funcs2.Qtarget(state.ID,id_dict,action,q_column)
-    error = target - np.dot(bas, theta)
-    theta_next = theta + (0.001 * (error * bas))
+    #this is the optimal Q value calc from value iteration
+    #Checking the target for states except 0 wouldn't work, because the other states might be different
+    #If an action that is different is taken state 1 is completely different from the target's state 1
+    target = funcs2.Qtarget(state,id_dict,action,q_column, state_mapper, state_copy)
 
-    print('Iteration {} - Error:'.format(iteration_no), error)
+    #target = Qmatrix.iloc[state.ID][action]
+    error = target - np.dot(bas, theta)
+    theta_next = theta + (step_size * (error * bas))
+
+    s.append(Qmatrix.iloc[0][0])
+    print('State:',state.ID,'Iteration {} - Error:'.format(iteration_no), error)
     theta = theta_next
+    #step_size -= (step_size/n_episodes)
 
 
 #Extract the optimal policy: action for each state

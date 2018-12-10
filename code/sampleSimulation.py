@@ -91,9 +91,10 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
     #Get the resource usage and update remaining debris amounts
     new_rem_debris, resource_usage = first_state.updateDebris(action)
 
+    period_before = funcs2.getPeriod(first_state.cum_resource, resource)
     first_state.cum_resource = first_state.cum_resource + resource_usage
 
-    period_before = funcs2.getPeriod(first_state.cum_resource, 0)
+
     #Update the planning horizon and resource amounts
     period = funcs2.getPeriod(first_state.cum_resource, resource)
 
@@ -143,7 +144,7 @@ def sample(first_state, actions, supply_nodes, resource, Qmatrix, Schedule, Q_al
 
 
 def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, EdgeList, G2, total_debris, actions, betw_centrality_service, total_supply,
-                    betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp, reachable_nodes ):
+                    betw_centrality_regular, betw_centrality_debris, betw_centrality_regular_sp, reachable_nodes, resource ):
 
     BasisMatrix = []
     done_actions = [i for i, val in enumerate(new_state.rem_debris) if val ==0] #Not cleared roads
@@ -163,8 +164,8 @@ def new_state_basis(new_state, phi_sa, ActionList, cum_resource, G_restored, Edg
                     betw_centrality_regular_sp)
 
             resource_usage = new_state.rem_debris[action]
-            period = funcs2.getPeriod(cum_resource, resource_usage)
-            period_before = funcs2.getPeriod(cum_resource, 0)
+            period = funcs2.getPeriod(cum_resource + resource_usage, resource)
+            period_before = funcs2.getPeriod(cum_resource, resource)
 
             # Find the new_node the action leads to
             ed = [edge for edge, edge_id in ActionList.items() if edge_id == action][0]

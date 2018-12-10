@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
 
-state_info = pd.read_csv('C:\Users\ulusan.a\Desktop\RL_rep\RL\data_files\state_info_100kVI_INS2.csv', header=None)
+
+
+state_info = pd.read_csv('C:\Users\ulusan.a\Desktop\RL_rep\RL\data_files\state_info_100kVI_INS2_V2.csv', header=None)
 state_info.columns = ['state feature', 'value']
 state_info['state'], state_info['feature'] = state_info['state feature'].str.split(',',1).str
 state_info['state']=state_info['state'].str[1:].astype('int64')
@@ -21,4 +23,4 @@ for state_index in range(max_state+1):
     state_mapper[state_hash] = state_index
 
 df_map = pd.DataFrame.from_dict(state_mapper, orient='index')
-df_map.to_csv('C:\Users\ulusan.a\Desktop\RL_rep\RL\data_files\state_mapper_INS2.csv', header=None)
+df_map.to_csv('C:\Users\ulusan.a\Desktop\RL_rep\RL\data_files\state_mapper_INS2_V2.csv', header=None)
