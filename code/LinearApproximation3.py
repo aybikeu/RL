@@ -109,16 +109,24 @@ df_q.set_index('Unnamed: 0', inplace=True)
 df = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/basis_INS8.csv', sep=',')
 df.set_index('Unnamed: 0', inplace=True)
 
-q_column = pd.DataFrame(index=df.index.copy(), columns=['q_optimal', 'q_pred'])
-for i, row in df.iterrows():
-    i_str = i[1:-1]
-    st , act = i_str.split(',')
-    q_column.loc[i]['q_optimal'] = df_q.iloc[int(st)][int(act)]
+# q_column = pd.DataFrame(index=df.index.copy(), columns=['q_optimal', 'q_pred'])
+# for i, row in df.iterrows():
+#     i_str = i[1:-1]
+#     st , act = i_str.split(',')
+#     q_column.loc[i]['q_optimal'] = df_q.iloc[int(st)][int(act)]
 
-q_column['q_pred']=0.0
+# q_column['q_pred']=0.0
+#
+# q_column.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/q_columns_INS2_V3.csv')
 
-q_column.to_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/q_columns_INS2_V3.csv')
+q_column = pd.read_csv('C:/Users/ulusan.a/Desktop/RL_rep/RL/data_files/q_column_INS8.csv')
 
+q_column.index = df.index.copy()
+q_column.drop(['Unnamed: 0'], axis=1, inplace=True)
+q_column.columns = ['q_val']
+
+#plt.hist(q_column['q_val'].values)
+q_column['q_val'] = np.log(q_column['q_val'])
 
 #Q_predicted = pd.DataFrame(data = 0, index=df.index.copy(), columns=['q_predicted'])
 

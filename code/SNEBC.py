@@ -20,17 +20,18 @@ def SNEBC(G, demand, supply, weight):
     return betweenness
 
 def generic_BC(G, demand, supply, weight, hops):
-    betweenness = dict.fromkeys(G, 0.0)  # b[v]=0 for v in G
+    betweenness2 = dict.fromkeys(G, 0.0)  # b[v]=0 for v in G
 
     #Do it for all nodes
-    all_nodes = list(G.nodes)
-    for s in all_nodes:
+    #all_nodes = list(G.nodes)
+    supply_nodes = [i for i, p in enumerate(supply) if p > 0]
+    for s in supply_nodes:
 
         S, P, sigma, dist_label, sigma_dist = dijkstra_path(G, s, hops, weight)
         # accumulation
-        betweenness = accumulate(betweenness, S, P, sigma, s, sigma_dist, demand, supply, dist_label)
+        betweenness2 = accumulate(betweenness2, S, P, sigma, s, sigma_dist, demand, supply, dist_label)
     # rescaling
-    return betweenness
+    return betweenness2
 
 def dijkstra_path(G, s, hops, weight='weight'):
     # modified from Eppstein
